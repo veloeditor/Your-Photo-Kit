@@ -14,6 +14,7 @@ namespace YourPhotoKit.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 

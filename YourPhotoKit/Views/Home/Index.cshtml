@@ -7,7 +7,19 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    <div class="text-center">
+        <div class="flex-row">
+            <h3>
+                <a asp-action="Index" asp-controller="GearItems">Your Camera Kit</a>
+            </h3>
+        </div>
 
+        <div class="text-center">
+            <h3>
+                <a asp-action="Index" asp-controller="Trips">Your Trips</a>
+            </h3>
+        </div>
+    </div>
 }
 else
 {
@@ -16,4 +28,5 @@ else
         <h5 class="h5">A place to log your photo gear, create a trip and pack your bag.</h5>
         <h5>Create an account and get started creating your kit today.</h5>
     </div>
+    <br />
 }
