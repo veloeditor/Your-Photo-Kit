@@ -28,6 +28,7 @@ namespace YourPhotoKit.Models
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Zip Code")]
         public string Location { get; set; }
 
         [Display(Name = "Photo URL")]

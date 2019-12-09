@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using YourPhotoKit.Data;
 using YourPhotoKit.Models;
+using YourPhotoKit.Models.TripModels;
 
 namespace YourPhotoKit.Controllers
 {
@@ -46,10 +47,13 @@ namespace YourPhotoKit.Controllers
         }
 
         // GET: Trips/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-            return View();
+            var viewModel = new CreateandEditTripViewModel()
+            {
+                GearItems = await _context.GearItems.ToListAsync()
+            };
+            return View(viewModel);
         }
 
         // POST: Trips/Create
