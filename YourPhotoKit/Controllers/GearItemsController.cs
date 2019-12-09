@@ -23,6 +23,8 @@ namespace YourPhotoKit.Controllers
             _userManager = userManager;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         // GET: GearItems
         public async Task<IActionResult> Index()
         {
@@ -89,13 +91,17 @@ namespace YourPhotoKit.Controllers
                 return NotFound();
             }
 
-            var gearItem = await _context.GearItems.FindAsync(id);
-            if (gearItem == null)
+            var viewModel = new GearItemCreateViewModel()
+            {
+                GearItem = await _context.GearItems.FindAsync(id),
+                GearTypes = await _context.GearType.ToListAsync()
+            };
+            
+            if (viewModel.GearItem == null)
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", gearItem.ApplicationUserId);
-            return View(gearItem);
+            return View(viewModel);
         }
 
         // POST: GearItems/Edit/5
@@ -103,23 +109,29 @@ namespace YourPhotoKit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GearItemId,Title,Description,GearTypeId,Cost,DatePurchased,SerialNumber,PhotoUrl,ApplicationUserId")] GearItem gearItem)
+        public async Task<IActionResult> Edit(int id, GearItemCreateViewModel viewModel)
         {
-            if (id != gearItem.GearItemId)
+            if (id != viewModel.GearItem.GearItemId)
             {
                 return NotFound();
             }
+
+            ModelState.Remove("GearItem.UserId");
+            ModelState.Remove("GearItem.User");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(gearItem);
+                    var user = await GetCurrentUserAsync();
+                    viewModel.GearItem.User = user;
+                    viewModel.GearItem.ApplicationUserId = user.Id;
+                    _context.Update(viewModel.GearItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GearItemExists(gearItem.GearItemId))
+                    if (!GearItemExists(viewModel.GearItem.GearItemId))
                     {
                         return NotFound();
                     }
@@ -130,8 +142,7 @@ namespace YourPhotoKit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", gearItem.ApplicationUserId);
-            return View(gearItem);
+            return View(viewModel);
         }
 
         // GET: GearItems/Delete/5
