@@ -12,7 +12,7 @@ namespace YourPhotoKit.Models
         public int TripGearId { get; set; }
 
         [Required]
-        public int GearId { get; set; }
+        public int GearItemId { get; set; }
        
         [Required]
         public int TripId { get; set; }

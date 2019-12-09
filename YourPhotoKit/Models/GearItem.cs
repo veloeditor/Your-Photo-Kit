@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YourPhotoKit.Models
@@ -9,10 +10,12 @@ namespace YourPhotoKit.Models
         public int GearItemId { get; set; }
 
         [Required]
+        [StringLength(55, ErrorMessage = "Please shorten the title to 55 characters or less")]
         [Display(Name = "Gear Name")]
         public string Title { get; set; }
 
         [Required]
+        [StringLength(255, ErrorMessage = "Please shorten the description to 255 characters or less")]
         [Display(Name = "Gear Description")]
         public string Description { get; set; }
 
@@ -20,8 +23,9 @@ namespace YourPhotoKit.Models
         [Display(Name = "Gear Type")]
         public int GearTypeId { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Price Paid")]
-        public decimal Price { get; set; }
+        public decimal Cost { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Date Purchased")]
@@ -37,6 +41,7 @@ namespace YourPhotoKit.Models
         public ApplicationUser User { get; set; }
 
         public Trip Trip { get; set; }
+        public virtual ICollection<TripGear> TripGear { get; set; }
 
 
     }

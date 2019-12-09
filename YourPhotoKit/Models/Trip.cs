@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YourPhotoKit.Models
@@ -9,10 +10,12 @@ namespace YourPhotoKit.Models
         public int TripId { get; set; }
 
         [Required]
+        [StringLength(55, ErrorMessage = "Please shorten the title to 55 characters or less")]
         [Display(Name = "Trip Name")]
         public string Title { get; set; }
 
         [Required]
+        [StringLength(255, ErrorMessage = "Please shorten the description to 255 characters or less")]
         [Display(Name = "Trip Description")]
         public string Description { get; set; }
 
@@ -24,6 +27,7 @@ namespace YourPhotoKit.Models
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
+        [Required]
         public string Location { get; set; }
 
         [Display(Name = "Photo URL")]
@@ -33,6 +37,7 @@ namespace YourPhotoKit.Models
         public string UserComments { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
+        public virtual ICollection<GearItem> GetCollection { get; set; }
 
     }
 }
