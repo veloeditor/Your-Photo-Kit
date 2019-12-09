@@ -4,11 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your Kit</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add Gear</a>
 </p>
+
+@if (Model.ToList().Count == 0)
+{
+    <p> Let's add some gear to your kit!  Click the link above to add some new gear.</p>
+}
+else
+{
+
 <table class="table">
     <thead>
         <tr>
@@ -27,17 +35,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.SerialNumber)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -55,12 +58,6 @@
                 @Html.DisplayFor(modelItem => item.SerialNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhotoUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.GearItemId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.GearItemId">Delete</a>
@@ -69,3 +66,4 @@
 }
     </tbody>
 </table>
+}

@@ -1,4 +1,4 @@
-﻿@model YourPhotoKit.Models.GearItem
+﻿@model YourPhotoKit.Models.GearItems.GearItemCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,42 +13,33 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="GearItem.Title" class="control-label"></label>
+                <input asp-for="GearItem.Title" class="form-control" />
+                <span asp-validation-for="GearItem.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="GearItem.Description" class="control-label"></label>
+                <input asp-for="GearItem.Description" class="form-control" />
+                <span asp-validation-for="GearItem.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GearTypeId" class="control-label"></label>
-                <select asp-for="GearTypeId" class ="form-control" asp-items="ViewBag.GearTypeId"></select>
+                <label asp-for="GearItem.GearTypeId" class="control-label"></label>
+                <select asp-for="GearItem.GearTypeId" class ="form-control" asp-items="Model.GearTypeOptions"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Cost" class="control-label"></label>
-                <input asp-for="Cost" class="form-control" />
-                <span asp-validation-for="Cost" class="text-danger"></span>
+                <label asp-for="GearItem.Cost" class="control-label"></label>
+                <input asp-for="GearItem.Cost" class="form-control" />
+                <span asp-validation-for="GearItem.Cost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DatePurchased" class="control-label"></label>
-                <input asp-for="DatePurchased" class="form-control" />
-                <span asp-validation-for="DatePurchased" class="text-danger"></span>
+                <label asp-for="GearItem.DatePurchased" class="control-label"></label>
+                <input asp-for="GearItem.DatePurchased" class="form-control" />
+                <span asp-validation-for="GearItem.DatePurchased" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SerialNumber" class="control-label"></label>
-                <input asp-for="SerialNumber" class="form-control" />
-                <span asp-validation-for="SerialNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhotoUrl" class="control-label"></label>
-                <input asp-for="PhotoUrl" class="form-control" />
-                <span asp-validation-for="PhotoUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApplicationUserId" class="control-label"></label>
-                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <label asp-for="GearItem.SerialNumber" class="control-label"></label>
+                <input asp-for="GearItem.SerialNumber" class="form-control" />
+                <span asp-validation-for="GearItem.SerialNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
