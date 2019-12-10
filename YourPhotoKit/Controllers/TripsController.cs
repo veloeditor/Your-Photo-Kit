@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,15 @@ namespace YourPhotoKit.Controllers
     public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TripsController(ApplicationDbContext context)
+        public TripsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Trips
         public async Task<IActionResult> Index()
@@ -52,6 +57,8 @@ namespace YourPhotoKit.Controllers
             var viewModel = new CreateandEditTripViewModel()
             {
                 GearItems = await _context.GearItems.ToListAsync()
+                
+                
             };
             return View(viewModel);
         }
@@ -61,16 +68,28 @@ namespace YourPhotoKit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TripId,Title,Description,StartDate,EndDate,Location,PhotoUrl,UserComments,ApplicationUserId")] Trip trip)
+        public async Task<IActionResult> Create(CreateandEditTripViewModel viewModel)
         {
+            ModelState.Remove("Trip.UserId");
+            ModelState.Remove("Trip.User");
+            
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
-                await _context.SaveChangesAsync();
+                var user = await GetCurrentUserAsync();
+                viewModel.Trip.User = user;
+                viewModel.Trip.ApplicationUserId = user.Id;
+
+                _context.Add(viewModel.Trip);
+                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", trip.ApplicationUserId);
-            return View(trip);
+           
+            
+            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", viewModel.Trip.ApplicationUserId);
+            _context.Add(viewModel.TripGear);
+            await _context.SaveChangesAsync();
+
+            return View(viewModel.Trip);
         }
 
         // GET: Trips/Edit/5

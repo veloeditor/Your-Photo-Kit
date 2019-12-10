@@ -9,12 +9,16 @@ namespace YourPhotoKit.Models.TripModels
     public class CreateandEditTripViewModel
     {
         public Trip Trip { get; set; }
+        public TripGear TripGear { get; set; }
         public List<GearItem> GearItems { get; set; }
-        public List<SelectListItem> TripGearOptions
+
+        public IEnumerable<GearForTrip> GearForTrip {get; set;}
+
+        public List<SelectListItem> GearItemOptions
         {
             get
             {
-                return GearItems?.Select(g => new SelectListItem(g.Title, g.GearItemId.ToString())).ToList();
+                return GearItems?.Select(gt => new SelectListItem(gt.Title, gt.GearItemId.ToString())).ToList();
             }
         }
     }

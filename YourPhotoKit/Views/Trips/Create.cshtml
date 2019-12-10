@@ -1,4 +1,4 @@
-﻿@model YourPhotoKit.Models.Trip
+﻿@model YourPhotoKit.Models.TripModels.CreateandEditTripViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,35 +13,64 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Trip.Title" class="control-label"></label>
+                <input asp-for="Trip.Title" class="form-control" />
+                <span asp-validation-for="Trip.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Trip.Description" class="control-label"></label>
+                <input asp-for="Trip.Description" class="form-control" />
+                <span asp-validation-for="Trip.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <label asp-for="Trip.StartDate" class="control-label"></label>
+                <input asp-for="Trip.StartDate" class="form-control" />
+                <span asp-validation-for="Trip.StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+                <label asp-for="Trip.EndDate" class="control-label"></label>
+                <input asp-for="Trip.EndDate" class="form-control" />
+                <span asp-validation-for="Trip.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <label asp-for="Trip.Location" class="control-label"></label>
+                <input asp-for="Trip.Location" class="form-control" />
+                <span asp-validation-for="Trip.Location" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserComments" class="control-label"></label>
-                <input asp-for="UserComments" class="form-control" />
-                <span asp-validation-for="UserComments" class="text-danger"></span>
+                <label asp-for="TripGear.GearItemId" class="control-label"></label>
+                <select asp-for="TripGear.GearItemId" class="form-control" asp-items="Model.GearItemOptions"></select>
             </div>
+            <div class="form-group">
+                <label asp-for="Trip.UserComments" class="control-label"></label>
+                <input asp-for="Trip.UserComments" class="form-control" />
+                <span asp-validation-for="Trip.UserComments" class="text-danger"></span>
+            </div>
+            @*<div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <h4>Add Gear</h4>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    @for (var i = 0; i < Model.GearForTrip.Count(); i++)
+                    {
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Model.GearItems[i].Title
+                                    @Html.CheckBox("IsChecked", new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
