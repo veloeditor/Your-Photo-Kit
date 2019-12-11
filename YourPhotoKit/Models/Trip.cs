@@ -28,6 +28,7 @@ namespace YourPhotoKit.Models
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Zip Code")]
         public string Location { get; set; }
 
         [Display(Name = "Photo URL")]
@@ -37,7 +38,8 @@ namespace YourPhotoKit.Models
         public string UserComments { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
-        public virtual ICollection<GearItem> GetCollection { get; set; }
+        public virtual ICollection<GearItem> GearItems { get; set; }
+        public virtual ICollection<TripGear> TripGear { get; set; }
 
     }
 }
