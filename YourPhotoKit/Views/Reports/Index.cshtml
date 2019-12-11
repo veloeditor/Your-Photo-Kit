@@ -4,19 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your Kit List w/ Total Paid</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cost)
@@ -37,9 +31,6 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
             <td>
@@ -54,4 +45,9 @@
         </tr>
 }
     </tbody>
+    <tfoot>
+        <td>
+            Total Cost at Purchase: $@Model.Sum(i => i.Cost)
+        </td>
+    </tfoot>
 </table>
