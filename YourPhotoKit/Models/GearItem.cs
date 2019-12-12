@@ -41,7 +41,8 @@ namespace YourPhotoKit.Models
         public ApplicationUser User { get; set; }
 
         public Trip Trip { get; set; }
-        public virtual ICollection<TripGear> TripGear { get; set; }
+  
+        public List<TripGear> TripGear { get; set; } = new List<TripGear>();
 
 
     }

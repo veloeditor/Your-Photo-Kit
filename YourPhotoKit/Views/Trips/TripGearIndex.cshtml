@@ -1,0 +1,73 @@
+﻿@model YourPhotoKit.Models.TripModels.AddTripGearViewModel
+
+@{
+    ViewData["Title"] = "TripGearIndex";
+}
+
+<h3>Add Gear To This Trip</h3>
+
+<div>
+    <h5>Your Gear</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                   <h4>Placeholder Text</h4>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.GearItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("someAction", "Trips"))
+                        {
+                            <button type="submit" class="btn-sm btn-primary">Add</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h5>Packed Gear</h5>
+
+    
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PickedItems)
+        {
+           
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GearItem.Title)
+                </td>
+                <td>
+                    @using (Html.BeginForm("someAction", "Trips"))
+                    {
+                        <button type="submit" class="btn-sm btn-danger">X</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    
+    
+    
+</div>
