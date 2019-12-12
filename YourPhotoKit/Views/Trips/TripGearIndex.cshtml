@@ -1,4 +1,4 @@
-﻿@model YourPhotoKit.Models.TripModels.AddTripGearViewModel
+﻿@model YourPhotoKit.Models.TripGearViews.AddGearToTripViewModel
 
 @{
     ViewData["Title"] = "TripGearIndex";
@@ -12,12 +12,13 @@
         <thead>
             <tr>
                 <th>
-                   <h4>Placeholder Text</h4>
+                   <h4></h4>
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+          
             @foreach (var item in Model.GearItems)
             {
                 <tr>
@@ -25,10 +26,12 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
-                        @using (Html.BeginForm("someAction", "Trips"))
-                        {
-                            <button type="submit" class="btn-sm btn-primary">Add</button>
-                        }
+                        <form asp-action="AddTripGear" asp-controller="Trips">
+
+                            <input label="TripId" type="hidden" asp-for="Trip.TripId" />
+                            <input name="GearItemId" type="hidden" value="@item.GearItemId" />
+                            <input type="submit" value="Add" class="btn-sm btn-primary" />
+                        </form>
                     </td>
                 </tr>
             }
@@ -58,10 +61,12 @@
                     @Html.DisplayFor(modelItem => item.GearItem.Title)
                 </td>
                 <td>
-                    @using (Html.BeginForm("someAction", "Trips"))
-                    {
-                        <button type="submit" class="btn-sm btn-danger">X</button>
-                    }
+                    <form asp-action="RemoveTripGear" asp-controller="Trips">
+
+                        <input label="TripId" type="hidden" asp-for="Trip.TripId" />
+                        <input name="GearItemId" type="hidden" value="@item.GearItemId" />
+                        <input type="submit" value="X" class="btn-sm btn-danger" />
+                    </form>
                 </td>
             </tr>
         }
