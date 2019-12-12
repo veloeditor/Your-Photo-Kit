@@ -18,9 +18,11 @@ namespace YourPhotoKit.Models
         [Required]
         public int TripId { get; set; }
 
+        public bool IsPacked { get; set; }
+
         public Trip Trip { get; set; }
-        public string PhotoUrl { get; set; }
 
         public GearItem GearItem { get; set; }
+        
     }
 }

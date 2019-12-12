@@ -32,6 +32,31 @@ namespace YourPhotoKit.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: List of Gear for a Trip
+        public async Task<IActionResult> TripGearIndex(int? id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var pickedItems = await _context.TripGear.Where(tg => tg.TripId == id).ToListAsync();
+            var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+
+            var trip = await _context.Trips
+                 .Include(t => t.User)
+                 .Include(t => t.GearItems)
+                 .FirstOrDefaultAsync(m => m.TripId == id);
+
+            var viewModel = new AddTripGearViewModel()
+            {
+                
+                Trip = trip,
+                GearItems = gearItems,
+                PickedItems = pickedItems
+                 
+        };
+
+            return View(viewModel);
+        }
+
+
         // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -40,15 +65,30 @@ namespace YourPhotoKit.Controllers
                 return NotFound();
             }
 
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var pickedItems = await _context.TripGear.Where(tg => tg.TripId == id).ToListAsync();
+            var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+
             var trip = await _context.Trips
                 .Include(t => t.User)
+                .Include(t => t.TripGear)
                 .FirstOrDefaultAsync(m => m.TripId == id);
+
+            var viewModel = new AddTripGearViewModel()
+            {
+
+                Trip = trip,
+                GearItems = gearItems,
+                PickedItems = pickedItems
+
+            };
+
             if (trip == null)
             {
                 return NotFound();
             }
 
-            return View(trip);
+            return View(viewModel);
         }
 
         // GET: Trips/Create
@@ -81,7 +121,7 @@ namespace YourPhotoKit.Controllers
 
                 _context.Add(viewModel.Trip);
                  await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details));
             }
            
             

@@ -12,7 +12,7 @@ namespace YourPhotoKit.Models.TripModels
         public TripGear TripGear { get; set; }
         public List<GearItem> GearItems { get; set; }
 
-        public IEnumerable<GearForTrip> GearForTrip {get; set;}
+      
 
         public List<SelectListItem> GearItemOptions
         {

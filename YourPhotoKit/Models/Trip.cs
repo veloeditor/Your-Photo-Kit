@@ -28,6 +28,7 @@ namespace YourPhotoKit.Models
         public DateTime EndDate { get; set; }
 
         [Required]
+        [StringLength(5, ErrorMessage = "Only use the first 5 digits of the zip code")]
         [Display(Name = "Zip Code")]
         public string Location { get; set; }
 
@@ -40,6 +41,8 @@ namespace YourPhotoKit.Models
         public ApplicationUser User { get; set; }
         public virtual ICollection<GearItem> GearItems { get; set; }
         public virtual ICollection<TripGear> TripGear { get; set; }
+        //public virtual ICollection<TripGear> PickedItems { get; set; }
+
 
     }
 }
