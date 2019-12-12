@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using YourPhotoKit.Data;
 using YourPhotoKit.Models;
+using YourPhotoKit.Models.TripGearViews;
 using YourPhotoKit.Models.TripModels;
 
 namespace YourPhotoKit.Controllers
 {
+    [Authorize]
     public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,7 +48,7 @@ namespace YourPhotoKit.Controllers
                  .Include(t => t.GearItems)
                  .FirstOrDefaultAsync(m => m.TripId == id);
 
-            var viewModel = new AddTripGearViewModel()
+            var viewModel = new AddGearToTripViewModel()
             {
                 
                 Trip = trip,
@@ -131,6 +135,43 @@ namespace YourPhotoKit.Controllers
 
             return View(viewModel.Trip);
         }
+
+        //Add gear to a tripgear join table
+       public async Task<IActionResult> AddTripGear(AddGearToTripViewModel viewModel)
+        {
+
+            var tripId = viewModel.Trip.TripId;
+            var gearItemId = viewModel.GearItemId;
+            
+            var tripGear = new TripGear
+                {
+                    GearItemId = gearItemId,
+                    TripId = tripId,
+                    IsPacked = true
+                };
+                _context.TripGear.Add(tripGear);
+                await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(TripGearIndex), new { id = tripId});
+
+        }
+
+        //Remove gear to a tripgear join table
+        public async Task<IActionResult> RemoveTripGear(AddGearToTripViewModel viewModel)
+        {
+
+            var tripId = viewModel.Trip.TripId;
+            var gearItemId = viewModel.GearItemId;
+
+            var tripGear = await _context.TripGear.FirstOrDefaultAsync(tg => tg.TripId == tripId && tg.GearItemId == gearItemId && tg.IsPacked);
+
+            _context.TripGear.Remove(tripGear);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(TripGearIndex), new { id = tripId });
+
+        }
+
 
         // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
