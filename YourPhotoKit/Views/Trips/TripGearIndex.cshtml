@@ -8,6 +8,13 @@
 
 <div>
     <h5>Your Gear</h5>
+
+
+    <ul style="list-style-type: none; padding: 0px; margin: 0px;">
+        <li>
+
+        </li>
+    </ul>
     <table class="table">
         <thead>
             <tr>
@@ -22,6 +29,7 @@
             @foreach (var item in Model.GearItems)
             {
                 <tr>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
@@ -41,38 +49,38 @@
 <div>
     <h5>Packed Gear</h5>
 
-    
-<table class="table">
+    <table class="table">
 
-    <thead>
-        <tr>
-            <th>
-
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.PickedItems)
-        {
-           
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GearItem.Title)
-                </td>
-                <td>
-                    <form asp-action="RemoveTripGear" asp-controller="Trips">
+                <th>
 
-                        <input label="TripId" type="hidden" asp-for="Trip.TripId" />
-                        <input name="GearItemId" type="hidden" value="@item.GearItemId" />
-                        <input type="submit" value="X" class="btn-sm btn-danger" />
-                    </form>
-                </td>
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-    
-    
-    
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PickedItems)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GearItem.Title)
+                    </td>
+                    <td>
+                        <form asp-action="RemoveTripGear" asp-controller="Trips">
+
+                            <input label="TripId" type="hidden" asp-for="Trip.TripId" />
+                            <input name="GearItemId" type="hidden" value="@item.GearItemId" />
+                            <input type="submit" value="X" class="btn-sm btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="javascript:history.go(-1)">Go Back</a>
+
+
 </div>
