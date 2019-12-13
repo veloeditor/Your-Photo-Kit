@@ -14,3 +14,5 @@ SELECT * FROM GearItems gi LEFT JOIN TripGear tg ON gi.GearItemId = tg.GearItemI
 
 DELETE FROM TripGear
 
+DELETE FROM Trips Where TripId = 3
+
