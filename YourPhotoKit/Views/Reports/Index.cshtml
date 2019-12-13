@@ -4,8 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Your Kit List w/ Total Paid</h1>
+<h1>Your Kit Report</h1>
+<div style="text-align: center">
+    <form asp-controller="Reports" asp-action="Index" method="get">
+        <p>
+            <input type="text" name="SearchString" placeholder="Search for gear or filter by year" size="72">
+            <input type="submit" value="Search" />
+            <a href=%: Url.Action(" Index", "Reports" ) %>
 
+                <button>Reset List</button>
+            </a>
+        </p>
+    </form>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -25,29 +36,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePurchased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SerialNumber)
-            </td>
-            <td>
-               
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatePurchased)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SerialNumber)
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
     </tbody>
     <tfoot>
-        <td>
-            Total Cost at Purchase: $@Model.Sum(i => i.Cost)
-        </td>
+    <td>
+        Total Cost at Purchase: $@Model.Sum(i => i.Cost)
+    </td>
     </tfoot>
 </table>

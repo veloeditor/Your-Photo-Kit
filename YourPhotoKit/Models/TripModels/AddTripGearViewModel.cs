@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,10 @@ namespace YourPhotoKit.Models.TripModels
         public GearItem GearYouOwn { get; set; }
 
         public virtual ICollection<GearItem> GearItems { get; set; }
+
+        [Display(Name = "Packed Gear")]
         public virtual ICollection<TripGear> PickedItems { get; set; }
+        public GearType GearType { get; set; }
 
     }
 }

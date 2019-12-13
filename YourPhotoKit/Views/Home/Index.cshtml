@@ -4,10 +4,11 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+    
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="text-center">
+        <h1 class="display-4">Welcome to Your Photo Kit</h1>
         <div class="flex-row">
             <h3>
                 <a asp-action="Index" asp-controller="GearItems">Your Camera Kit</a>

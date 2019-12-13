@@ -22,6 +22,7 @@ namespace YourPhotoKit.Models
 
         public Trip Trip { get; set; }
 
+        [Display(Name = "Packed Gear")]
         public GearItem GearItem { get; set; }
         
     }

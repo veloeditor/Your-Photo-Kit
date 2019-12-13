@@ -32,7 +32,8 @@ namespace YourPhotoKit.Controllers
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Trips.Include(t => t.User);
+            var user = await GetCurrentUserAsync();
+            var applicationDbContext = _context.Trips.Include(t => t.User).Where(t => t.ApplicationUserId == user.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -40,8 +41,9 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> TripGearIndex(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var pickedItems = await _context.TripGear.Where(tg => tg.TripId == id).ToListAsync();
-            var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+            var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
+            //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any()).ToListAsync();
 
             var trip = await _context.Trips
                  .Include(t => t.User)
@@ -70,8 +72,9 @@ namespace YourPhotoKit.Controllers
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var pickedItems = await _context.TripGear.Where(tg => tg.TripId == id).ToListAsync();
-            var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+            var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
+            //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
+            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any()).ToListAsync();
 
             var trip = await _context.Trips
                 .Include(t => t.User)
@@ -142,8 +145,10 @@ namespace YourPhotoKit.Controllers
 
             var tripId = viewModel.Trip.TripId;
             var gearItemId = viewModel.GearItemId;
-            
-            var tripGear = new TripGear
+            var existingTripGear = await _context.TripGear.FirstOrDefaultAsync(tg => tg.TripId == tripId && tg.GearItemId == gearItemId && tg.IsPacked);
+            if (existingTripGear == null)
+            {
+                var tripGear = new TripGear
                 {
                     GearItemId = gearItemId,
                     TripId = tripId,
@@ -151,9 +156,15 @@ namespace YourPhotoKit.Controllers
                 };
                 _context.TripGear.Add(tripGear);
                 await _context.SaveChangesAsync();
-            
-            return RedirectToAction(nameof(TripGearIndex), new { id = tripId});
 
+                return RedirectToAction(nameof(TripGearIndex), new { id = tripId });
+            }
+            else
+            {
+                var successMsg = TempData["SuccessMessage"] as string;
+                TempData["SuccessMessage"] = $"You already added this gear.";
+                return RedirectToAction(nameof(TripGearIndex), new { id = tripId });
+            }
         }
 
         //Remove gear to a tripgear join table
