@@ -44,6 +44,8 @@ namespace YourPhotoKit.Models
   
         public List<TripGear> TripGear { get; set; } = new List<TripGear>();
 
+       public GearType gearType { get; set; }
+
 
     }
 }

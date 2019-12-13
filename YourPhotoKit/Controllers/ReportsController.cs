@@ -44,6 +44,7 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> Index(string SearchString)
         {
             var user = await GetCurrentUserAsync();
+           
 
             if (SearchString == null)
             {
@@ -52,7 +53,7 @@ namespace YourPhotoKit.Controllers
             }
             else
             {
-                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id).Where(p => p.Title.ToLower().Contains(SearchString));
+                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id).Where(g => g.Title.ToLower().Contains(SearchString) || g.DatePurchased.Year.ToString().Contains(SearchString));
                 return View(await applicationDbContext.ToListAsync());
             }
         }

@@ -31,7 +31,7 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-            var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+            var applicationDbContext = _context.GearItems.Include(g => g.gearType).Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -45,6 +45,7 @@ namespace YourPhotoKit.Controllers
 
             var gearItem = await _context.GearItems
                 .Include(g => g.User)
+                .Include(g => g.gearType)
                 .FirstOrDefaultAsync(m => m.GearItemId == id);
             if (gearItem == null)
             {

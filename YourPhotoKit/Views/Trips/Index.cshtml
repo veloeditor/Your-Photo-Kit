@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h3>Your Trips</h3>
+<h2 style="text-align: center">Your Trips</h2>
+<p style="text-align: center">Here is a list of your trips.</p>
 
 <p>
     <a asp-action="Create">Add a new trip</a>
@@ -13,31 +14,25 @@
 
 @if (Model.ToList().Count == 0)
 {
-    <p>You currently do not have any trips to show. A trip and pack some gear!</p>
+    <p>You currently do not have any trips to show. Create a trip and pack some gear!</p>
 }
 else
 {
-
+    <br />
+    <div>
+        <h5>Upcoming Trips</h5>
+    </div>
     <table class="table">
         <thead>
             <tr>
-                <th>
+                <th width="27%">
                     @Html.DisplayNameFor(model => model.Title)
                 </th>
-                <th>
+                <th width="43%">
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserComments)
                 </th>
                 <th></th>
             </tr>
@@ -45,31 +40,71 @@ else
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Location)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserComments)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
-                    </td>
-                </tr>
+                if (item.EndDate >= DateTime.Today)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+    <div>
+        <h5>Past Trips</h5>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="27%">
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th width="43%">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.EndDate <= DateTime.Today)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
