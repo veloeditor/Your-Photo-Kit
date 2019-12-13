@@ -41,12 +41,20 @@ namespace YourPhotoKit.Controllers
 
 
         // GET: Reports
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
             var user = await GetCurrentUserAsync();
 
-            var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
-            return View(await applicationDbContext.ToListAsync());
+            if (SearchString == null)
+            {
+                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id).Where(p => p.Title.ToLower().Contains(SearchString));
+                return View(await applicationDbContext.ToListAsync());
+            }
         }
 
         //Insurance List
