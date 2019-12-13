@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Your Kit</h1>
+<h2 style="text-align: center">Your Photo Kit</h2>
+<p style="text-align: center">Here is a list of your gear.</p>
 
 <p>
     <a asp-action="Create">Add Gear</a>
@@ -21,21 +22,14 @@ else
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.gearType.Label)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatePurchased)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SerialNumber)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -43,19 +37,13 @@ else
 {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.gearType.Label)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePurchased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SerialNumber)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |

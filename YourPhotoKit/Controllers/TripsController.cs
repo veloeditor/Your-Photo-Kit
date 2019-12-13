@@ -33,7 +33,7 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-            var applicationDbContext = _context.Trips.Include(t => t.User).Where(t => t.ApplicationUserId == user.Id);
+            var applicationDbContext = _context.Trips.Include(t => t.User).Where(t => t.ApplicationUserId == user.Id).OrderByDescending(t => t.StartDate);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -43,7 +43,7 @@ namespace YourPhotoKit.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
             //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
-            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any()).ToListAsync();
+            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any(tg => tg.TripGearId == id)).ToListAsync();
 
             var trip = await _context.Trips
                  .Include(t => t.User)
@@ -128,7 +128,7 @@ namespace YourPhotoKit.Controllers
 
                 _context.Add(viewModel.Trip);
                  await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction(nameof(Index));
             }
            
             
