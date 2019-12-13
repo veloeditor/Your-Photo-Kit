@@ -5,35 +5,32 @@
 }
 
 <h3>Add Gear To This Trip</h3>
-
+<div class="container">
 <div>
-    <h5>Your Gear</h5>
-
-
-    <ul style="list-style-type: none; padding: 0px; margin: 0px;">
-        <li>
-
-        </li>
-    </ul>
-    <table class="table">
+    <table class="table table-sm w-25">
         <thead>
             <tr>
                 <th>
-                   <h4></h4>
+                    <h6 style="text-align: center">Your Available Gear</h6>
                 </th>
-                <th></th>
+
             </tr>
         </thead>
         <tbody>
-          
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (TempData["notice"] != null)
+            {
+                <p style="color:red;">@TempData["notice"]</p>
+            }
+
             @foreach (var item in Model.GearItems)
             {
-                <tr>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
+                <tr>
+                    <td width="90%">
+                        <span style="text-decoration:line-through">@Html.DisplayFor(modelItem => item.Title)</span>
                     </td>
-                    <td>
+                    <td width="10%">
                         <form asp-action="AddTripGear" asp-controller="Trips">
 
                             <input label="TripId" type="hidden" asp-for="Trip.TripId" />
@@ -42,21 +39,19 @@
                         </form>
                     </td>
                 </tr>
+
             }
         </tbody>
     </table>
 </div>
 <div>
-    <h5>Packed Gear</h5>
-
-    <table class="table">
+    <table class="table table-sm w-25">
 
         <thead>
             <tr>
                 <th>
-
+                    <h6 style="text-align: center">Your Packed Gear</h6>
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -67,12 +62,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.GearItem.Title)
                     </td>
-                    <td>
+                    <td width="10%">
                         <form asp-action="RemoveTripGear" asp-controller="Trips">
 
                             <input label="TripId" type="hidden" asp-for="Trip.TripId" />
                             <input name="GearItemId" type="hidden" value="@item.GearItemId" />
-                            <input type="submit" value="X" class="btn-sm btn-danger" />
+                            <input type="submit" value="Remove" class="btn-sm btn-danger" />
                         </form>
                     </td>
                 </tr>
@@ -80,7 +75,10 @@
         </tbody>
     </table>
 
-    <a href="javascript:history.go(-1)">Go Back</a>
+    
 
 
 </div>
+</div>
+<hr />
+<a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>

@@ -30,7 +30,8 @@ namespace YourPhotoKit.Controllers
         // GET: GearItems
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.GearItems.Include(g => g.User);
+            var user = await GetCurrentUserAsync();
+            var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
