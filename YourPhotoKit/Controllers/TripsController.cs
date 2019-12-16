@@ -43,7 +43,7 @@ namespace YourPhotoKit.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
             //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
-            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any(tg => tg.TripGearId == id)).ToListAsync();
+            var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any(tg => tg.TripId == id)).ToListAsync();
 
             var trip = await _context.Trips
                  .Include(t => t.User)
@@ -68,7 +68,8 @@ namespace YourPhotoKit.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
+
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -92,7 +93,8 @@ namespace YourPhotoKit.Controllers
 
             if (trip == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
+
             }
 
             return View(viewModel);

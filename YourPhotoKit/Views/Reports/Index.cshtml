@@ -11,60 +11,69 @@
     <form asp-controller="Reports" asp-action="Index" method="get">
         <p>
             <input type="text" name="SearchString" placeholder="Search for gear or filter by year" size="72">
-            <input type="submit" value="Search" class="btn btn-sm btn-primary"/>
+            <input type="submit" value="Search" class="btn btn-sm btn-primary" />
             <input type="button" title="submit" value="Clear" onclick="location.href='@Url.Action("Index", "Reports")'" class="btn btn-sm btn-warning" />
-           
+
         </p>
-        
+
     </form>
+
+
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatePurchased)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SerialNumber)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (Model.ToList().Count == 0)
+{
+    <p>No results matching your seach. Please try again.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DatePurchased)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SerialNumber)
-                </td>
-                <td>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DatePurchased)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SerialNumber)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-    @{var totalPrice = @Model.Sum(i => i.Cost); }
-    <tfoot>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DatePurchased)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SerialNumber)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        @{var totalPrice = @Model.Sum(i => i.Cost); }
+        <tfoot>
 
-    <td>
+        <td>
 
-        Total Cost at Purchase: $@String.Format("{0:n}", totalPrice)
+            <h5>Total Cost at Purchase: $@String.Format("{0:n}", totalPrice)</h5>
 
-    </td>
-    </tfoot>
-</table>
+        </td>
+        </tfoot>
+    </table>
+}
 <hr />

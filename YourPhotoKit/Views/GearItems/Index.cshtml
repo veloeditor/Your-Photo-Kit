@@ -4,11 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h2 style="text-align: center">Your Photo Kit</h2>
-<p style="text-align: center">Here is a list of your gear.</p>
+<h2 style="text-align: center; margin-bottom: 0px;">Your Photo Kit</h2>
+<p style="text-align: center">Here is a list of your gear. Ad some more today!</p>
 
-<p>
-    <a asp-action="Create">Add Gear</a>
+<p style="text-align: center">
+    <a asp-action="Create" style="text-align: center">Add Gear</a>
 </p>
 
 @if (Model.ToList().Count == 0)
@@ -17,41 +17,33 @@
 }
 else
 {
+<div> 
+    <div>
+        @foreach (var item in Model)
+        {
+            <div class="card-deck" style="max-width: 700px; margin:auto">
+                <div class="card">
+                <div></div>
+                    <div class="card-body">
+                        <h4 class="card-title" style="margin-bottom: 5px;">@Html.DisplayFor(modelItem => item.Title)</h4>
+                        <h6>@Html.DisplayFor(modelItem => item.gearType.Label)</h6>
+                        <p class="card-text">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </p>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                <a asp-action="Details" asp-route-id="@item.GearItemId">Details</a> | 
+                                <a asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |
+                                
+                                <a asp-action="Delete" asp-route-id="@item.GearItemId">Delete</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.gearType.Label)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model)
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.gearType.Label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GearItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GearItemId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        }
+        
+    </div>
+</div>
 }
