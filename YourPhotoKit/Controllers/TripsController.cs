@@ -33,7 +33,7 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-            var applicationDbContext = _context.Trips.Include(t => t.User).Where(t => t.ApplicationUserId == user.Id).OrderByDescending(t => t.StartDate);
+            var applicationDbContext = _context.Trips.Include(t => t.User).Where(t => t.ApplicationUserId == user.Id).OrderBy(t => t.StartDate);
             return View(await applicationDbContext.ToListAsync());
         }
 
