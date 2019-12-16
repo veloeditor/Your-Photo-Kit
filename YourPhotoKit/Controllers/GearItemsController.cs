@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,11 +20,13 @@ namespace YourPhotoKit.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public GearItemsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public GearItemsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
@@ -49,7 +53,7 @@ namespace YourPhotoKit.Controllers
                 .FirstOrDefaultAsync(m => m.GearItemId == id);
             if (gearItem == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(gearItem);
@@ -74,9 +78,20 @@ namespace YourPhotoKit.Controllers
         {
             ModelState.Remove("GearItem.UserId");
             ModelState.Remove("GearItem.User");
-            
+
             if (ModelState.IsValid)
             {
+                if (viewModel.Img != null)
+                {
+                    var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
+                    var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    var filePath = Path.Combine(imageDirectory, uniqueFileName);
+                    using (var myFile = new FileStream(filePath, FileMode.Create))
+                    {
+                        viewModel.Img.CopyTo(myFile);
+                    }
+                    viewModel.GearItem.PhotoUrl = uniqueFileName;
+                }
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 viewModel.GearItem.ApplicationUserId = user.Id;
                 _context.Add(viewModel.GearItem);
@@ -100,7 +115,7 @@ namespace YourPhotoKit.Controllers
                 GearItem = await _context.GearItems.FindAsync(id),
                 GearTypes = await _context.GearType.ToListAsync()
             };
-            
+
             if (viewModel.GearItem == null)
             {
                 return NotFound();
@@ -127,11 +142,50 @@ namespace YourPhotoKit.Controllers
             {
                 try
                 {
-                    var user = await GetCurrentUserAsync();
-                    viewModel.GearItem.User = user;
-                    viewModel.GearItem.ApplicationUserId = user.Id;
-                    _context.Update(viewModel.GearItem);
-                    await _context.SaveChangesAsync();
+                    var currentFileName = viewModel.GearItem.PhotoUrl;
+                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
+                    {
+                        var user = await GetCurrentUserAsync();
+                        viewModel.GearItem.User = user;
+                        viewModel.GearItem.ApplicationUserId = user.Id;
+                        var images = Directory.GetFiles("wwwroot/images");
+                        var fileToDelete = images.First(i => i.Contains(currentFileName));
+                        System.IO.File.Delete(fileToDelete);
+                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
+                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
+                        using (var myFile = new FileStream(filePath, FileMode.Create))
+                        {
+                            viewModel.Img.CopyTo(myFile);
+                        }
+                        viewModel.GearItem.PhotoUrl = uniqueFileName;
+                        _context.Update(viewModel.GearItem);
+                        await _context.SaveChangesAsync();
+                    }
+                    else if (viewModel.GearItem.PhotoUrl == null)
+                    {
+                        var user = await GetCurrentUserAsync();
+                        viewModel.GearItem.User = user;
+                        viewModel.GearItem.ApplicationUserId = user.Id;
+                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
+                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
+                        using (var myFile = new FileStream(filePath, FileMode.Create))
+                        {
+                            viewModel.Img.CopyTo(myFile);
+                        }
+                        viewModel.GearItem.PhotoUrl = uniqueFileName;
+                        _context.Update(viewModel.GearItem);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var user = await GetCurrentUserAsync();
+                        viewModel.GearItem.User = user;
+                        viewModel.GearItem.ApplicationUserId = user.Id; 
+                        _context.Update(viewModel.GearItem);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,7 +198,8 @@ namespace YourPhotoKit.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var gearId = viewModel.GearItem.GearItemId;
+                return RedirectToAction("Details", "GearItems", new { id = gearId });
             }
             return View(viewModel);
         }
@@ -174,6 +229,13 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var gearItem = await _context.GearItems.FindAsync(id);
+            var currentFileName = gearItem.PhotoUrl;
+            if (currentFileName != null)
+            {
+                var images = Directory.GetFiles("wwwroot/images");
+                var fileToDelete = images.First(i => i.Contains(currentFileName));
+                System.IO.File.Delete(fileToDelete);
+            }
             _context.GearItems.Remove(gearItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -182,6 +244,15 @@ namespace YourPhotoKit.Controllers
         private bool GearItemExists(int id)
         {
             return _context.GearItems.Any(e => e.GearItemId == id);
+        }
+
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
         }
     }
 }

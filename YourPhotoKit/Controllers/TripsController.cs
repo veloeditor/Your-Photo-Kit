@@ -68,7 +68,8 @@ namespace YourPhotoKit.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
+
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -92,7 +93,8 @@ namespace YourPhotoKit.Controllers
 
             if (trip == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
+
             }
 
             return View(viewModel);

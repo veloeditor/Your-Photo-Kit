@@ -4,54 +4,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h3 style="text-align:center">Details</h3>
+<h3 style="text-align:center">Gear Details</h3>
 
-<div>
-    <h4>GearItem</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.gearType.Label)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.gearType.Label)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DatePurchased)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DatePurchased)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SerialNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoUrl)
-        </dt>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.GearItemId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<div class="card-deck" style="max-width: 700px; margin:auto">
+    <div class="card" style="width: 25rem;">
+        <p style="margin: auto;">
+            <object data="~/images/@Model.PhotoUrl" type="image/jpg" style="margin:auto;">
+                <img style="width:100%; height:auto;" src="~/images/placeholder_gear.jpeg"/>
+            </object>
+        </p>
+        <div class="card-body">
+            <h4 class="card-title" style="margin-bottom: 5px;">@Html.DisplayFor(model => model.Title)</h4>
+            <h6>@Html.DisplayFor(model => model.gearType.Label)</h6>
+            <p class="card-text">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@Html.DisplayNameFor(model => model.Cost): @Html.DisplayFor(model => model.Cost)</li>
+                <li class="list-group-item">@Html.DisplayNameFor(model => model.DatePurchased): @Html.DisplayFor(model => model.DatePurchased)</li>
+                <li class="list-group-item">@Html.DisplayNameFor(model => model.SerialNumber):  @Html.DisplayFor(model => model.SerialNumber)</li>
+            </ul>
+        </div>
+        <div class="card-footer"
+            <small>
+                <a asp-action="Edit" asp-route-id="@Model.GearItemId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@Model.GearItemId">Delete</a>
+             </small>
+        </div>
+       </div>
+    </div>
+   
+<div style="text-align: center;"><a asp-action="Index">Back to List</a></div>
