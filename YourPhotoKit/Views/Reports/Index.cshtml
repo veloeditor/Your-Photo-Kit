@@ -26,7 +26,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" id="resultsTable">
         <thead>
             <tr>
                 <th>
@@ -67,13 +67,15 @@ else
         </tbody>
         @{var totalPrice = @Model.Sum(i => i.Cost); }
         <tfoot>
+            <tr>
+                <td>
 
-        <td>
+                    <h5>Total Cost at Purchase: $@String.Format("{0:n}", totalPrice)</h5>
 
-            <h5>Total Cost at Purchase: $@String.Format("{0:n}", totalPrice)</h5>
-
-        </td>
+                </td>
+            </tr>
         </tfoot>
     </table>
 }
-<hr />
+
+

@@ -143,6 +143,7 @@ namespace YourPhotoKit.Controllers
                 try
                 {
                     var currentFileName = viewModel.GearItem.PhotoUrl;
+                    //This if statement will check to see if there is a photo already on the gear item and the photo replacing it is a new file (with unique name).
                     if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
                     {
                         var user = await GetCurrentUserAsync();
@@ -162,6 +163,7 @@ namespace YourPhotoKit.Controllers
                         _context.Update(viewModel.GearItem);
                         await _context.SaveChangesAsync();
                     }
+                    //This else if statement allows the user to add a new photo and it will replace the temp image
                     else if (viewModel.GearItem.PhotoUrl == null)
                     {
                         var user = await GetCurrentUserAsync();
@@ -178,6 +180,7 @@ namespace YourPhotoKit.Controllers
                         _context.Update(viewModel.GearItem);
                         await _context.SaveChangesAsync();
                     }
+                    //The else statement is a basic edit post with no picture consideration
                     else
                     {
                         var user = await GetCurrentUserAsync();

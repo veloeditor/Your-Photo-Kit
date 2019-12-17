@@ -27,7 +27,6 @@ namespace YourPhotoKit.Models
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
-        [Required]
         [StringLength(5, ErrorMessage = "Only use the first 5 digits of the zip code")]
         [Display(Name = "Zip Code")]
         public string Location { get; set; }

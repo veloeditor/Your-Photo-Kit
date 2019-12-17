@@ -7,20 +7,25 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="text-center">
+    <div class="text-center" style="margin-top: 70px;">
         <h1 class="display-4">Welcome to Your Photo Kit</h1>
     </div>
     <div style="display: flex; justify-content: space-evenly; margin-top: 40px">
         <div class="flex-row">
-            <h3>
-                <a asp-action="Index" asp-controller="GearItems">Your Camera Kit</a>
-            </h3>
+            <div>
+                <h3>
+                    <a asp-action="Index" asp-controller="GearItems">Your Photo Kit</a>
+                </h3>
+            </div>
+        
         </div>
 
         <div class="flex-row">
-            <h3>
-                <a asp-action="Index" asp-controller="Trips">Your Trips</a>
-            </h3>
+            <div>
+                <h3>
+                    <a asp-action="Index" asp-controller="Trips">Your Trips</a>
+                </h3>
+            </div>
         </div>
     </div>
 
