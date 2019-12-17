@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace YourPhotoKit.Models.TripModels
         public TripGear TripGear { get; set; }
         public List<GearItem> GearItems { get; set; }
 
-      
+        public IFormFile Img { get; set; }
+
 
         public List<SelectListItem> GearItemOptions
         {
