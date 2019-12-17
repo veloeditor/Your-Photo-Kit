@@ -163,8 +163,8 @@ namespace YourPhotoKit.Controllers
             }
             else
             {
-                var successMsg = TempData["SuccessMessage"] as string;
-                TempData["SuccessMessage"] = $"You already added this gear.";
+                var successMsg = TempData["notice"] as string;
+                TempData["notice"] = $"You already added this gear.";
                 return RedirectToAction(nameof(TripGearIndex), new { id = tripId });
             }
         }
@@ -194,6 +194,7 @@ namespace YourPhotoKit.Controllers
                 return NotFound();
             }
 
+
             var trip = await _context.Trips.FindAsync(id);
             if (trip == null)
             {
@@ -210,13 +211,22 @@ namespace YourPhotoKit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TripId,Title,Description,StartDate,EndDate,Location,PhotoUrl,UserComments,ApplicationUserId")] Trip trip)
         {
+            var currentUser = await GetCurrentUserAsync();
+
+
             if (id != trip.TripId)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                trip.ApplicationUserId = user.Id;
+
+
+
                 try
                 {
                     _context.Update(trip);
