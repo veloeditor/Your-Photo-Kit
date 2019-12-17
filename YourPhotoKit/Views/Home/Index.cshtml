@@ -8,22 +8,22 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="text-center" style="margin-top: 70px;">
-        <h1 class="display-4">Welcome to Your Photo Kit</h1>
+        <h1 class="display-4" style="color:lightgray">Welcome to <span style="font-weight:bolder">Your Photo Kit</span></h1>
     </div>
-    <div style="display: flex; justify-content: space-evenly; margin-top: 40px">
-        <div class="flex-row">
-            <div>
+    <div style="display: flex; justify-content: space-evenly; margin-top: 60px">
+        <div class="flex-row" id="left-box" style="width: 350px; height: 200px; background-color: black;">
+            <div id="photoKit" style="text-align: center; margin-top: 70px;">
                 <h3>
-                    <a asp-action="Index" asp-controller="GearItems">Your Photo Kit</a>
+                    <a id="kit_link" asp-action="Index" asp-controller="GearItems">Your Kit</a>
                 </h3>
             </div>
         
         </div>
 
-        <div class="flex-row">
-            <div>
+        <div class="flex-row" id="right-box" style="width: 350px; height: 200px; background-color: black";>
+            <div id="trip" style="text-align: center; margin-top: 70px">
                 <h3>
-                    <a asp-action="Index" asp-controller="Trips">Your Trips</a>
+                    <a id="trip_link" asp-action="Index" asp-controller="Trips">Your Trips</a>
                 </h3>
             </div>
         </div>

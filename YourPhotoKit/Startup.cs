@@ -44,6 +44,9 @@ namespace YourPhotoKit
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseStaticFiles();
+
+
             }
             else
             {
