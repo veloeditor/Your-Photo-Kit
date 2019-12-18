@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,6 +21,6 @@ namespace YourPhotoKit.Models.TripModels
         [Display(Name = "Packed Gear")]
         public virtual ICollection<TripGear> PickedItems { get; set; }
         public GearType GearType { get; set; }
-
+        public IFormFile Img { get; set; }
     }
 }
