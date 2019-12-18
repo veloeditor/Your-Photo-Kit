@@ -4,12 +4,13 @@
     ViewData["Title"] = "Edit";
 }
 
-<h3>Edit Your Trip</h3>
+<h3 style="text-align: center; color: whitesmoke; margin: auto;">Edit Your Trip</h3>
 
 <h4></h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-7" style="margin: auto; padding-top: 15px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px;">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TripId" />
@@ -45,8 +46,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div style="text-align: center;">
+    <a class="back_index" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

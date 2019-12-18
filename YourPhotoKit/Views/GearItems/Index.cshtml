@@ -32,10 +32,10 @@ else
                         </p>
                         <div class="card-footer">
                             <small class="text-muted">
-                                <a asp-action="Details" asp-route-id="@item.GearItemId">Details</a> | 
-                                <a asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |
-                                
-                                <a asp-action="Delete" asp-route-id="@item.GearItemId">Delete</a>
+                                <a class="btn btn-sm btn-outline-light" asp-action="Details" asp-route-id="@item.GearItemId">Details</a> |
+                                <a class="btn btn-sm btn-outline-warning" asp-action="Edit" asp-route-id="@item.GearItemId">Edit</a> |
+
+                                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.GearItemId">Delete</a>
                             </small>
                         </div>
                     </div>
