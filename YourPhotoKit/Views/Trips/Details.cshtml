@@ -6,95 +6,47 @@
 
 <h3 style="text-align: center">Trip Details</h3>
 
-<div>
-    <h4></h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Trip.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Trip.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip.StartDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Trip.StartDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip.EndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Trip.EndDate)
-        </dd>
+<div class="card text-left" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 10px;">
+    
+    <div class="card-body">
+        <h5 class="card-title"><strong>@Html.DisplayFor(modelitem => Model.Trip.Title)</strong></h5>
+        <p class="card-text"><strong>Description: </strong> @Html.DisplayFor(modelitem => Model.Trip.Description)</p>
+        <p class="card-text"><strong>Start Date: </strong> @Html.DisplayFor(modelitem => Model.Trip.StartDate)</p>
+        <p class="card-text"><strong>End Date: </strong> @Html.DisplayFor(modelitem => Model.Trip.EndDate)</p>
 
         @if (Model.Trip.UserComments == null)
         {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trip.UserComments)
-            </dt>
-            <dd class="col-sm-10">
-                <p>You do not have any comments for this trip.</p>
-            </dd>
-
+            <p class="card-text"><strong>Trip Comments: </strong> You do not have any comments for this trip.</p>
         }
         else
         {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trip.UserComments)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trip.UserComments)
-            </dd>
-        }
+            <p class="card-text"> <strong>Trip Comments: </strong></p>
+            @Html.DisplayNameFor(model => model.Trip.UserComments)
 
+        }
         @if (Model.PickedItems.Count == 0)
         {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PickedItems)
-            </dt>
-            <dd class="col-sm-10">
-                <p>You do not currently have any gear for this trip.</p>
-            </dd>
+
+            <p class="card-text"><strong>Gear Items Packed: </strong>: You do not currently have any gear for this trip.</p>
+
         }
         else
         {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.GearForTrip.GearItem)
-            </dt>
-            <dd class="col-sm-10">
-                @foreach (var item in Model.PickedItems)
-                {
-                    <p style="margin-bottom: 0px">@item.GearItem.Title</p>
-                }
-                @*<a class="text-center" asp-action="TripGearIndex" asp-route-id="@Model.Trip.TripId">You have gear! Edit it here</a>*@
-
-            </dd>
+            <p class="card-text"><strong>Gear Items Packed: </strong></p>
+            @foreach (var item in Model.PickedItems)
+            {
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;">@item.GearItem.Title</li>
+                </ul>
+               
+            }
         }
+    </div>
+    <div class="card-footer">
 
-    </dl>
-
-    @if (Model.PickedItems.Count == 0)
-    {
-        <a class="text-center" asp-action="TripGearIndex" asp-route-id="@Model.Trip.TripId">Add Gear To This Trip</a>
-        <hr />
-    }
-    else
-    {
-        <a class="text-center" asp-action="TripGearIndex" asp-route-id="@Model.Trip.TripId">Edit Gear for this Trip</a>
-        <hr />
-    }
-
+        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Trip.TripId">Edit</a> |
+        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@Model.Trip.TripId">Delete</a> |
+        <a class="btn btn-sm btn-light" asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
 
-    <a asp-action="Edit" asp-route-id="@Model.Trip.TripId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

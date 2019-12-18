@@ -4,12 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 style="text-align: center; margin-bottom: 0px; color: gainsboro;">Your Photo Kit</h1>
+<h1 style="text-align: center; margin-bottom: 0px; color: whitesmoke;">Your Photo Kit</h1>
 
-
-<h6 style="text-align: center">
-    <a asp-action="Create" style="text-align: center; color: gainsboro">Add Gear</a>
-</h6>
+<p style="text-align: center;">
+    <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke;">Add Gear</a>
+</p>
 
 @if (Model.ToList().Count == 0)
 {
