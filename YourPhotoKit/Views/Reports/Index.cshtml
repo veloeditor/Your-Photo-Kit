@@ -26,8 +26,8 @@
 }
 else
 {
-    <table class="table" id="resultsTable">
-        <thead>
+    <table class="table table-bordered table-hover" id="resultsTable">
+        <thead class="thead-dark">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Title)
@@ -41,10 +41,10 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.SerialNumber)
                 </th>
-                <th></th>
+               
             </tr>
         </thead>
-        <tbody>
+        <tbody class="">
             @foreach (var item in Model)
             {
                 <tr>
@@ -60,8 +60,7 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.SerialNumber)
                     </td>
-                    <td>
-                    </td>
+                   
                 </tr>
             }
         </tbody>

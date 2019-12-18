@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -127,6 +128,18 @@ namespace YourPhotoKit.Controllers
             
             if (ModelState.IsValid)
             {
+                if (viewModel.Img != null)
+                {
+                    var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
+                    var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    var filePath = Path.Combine(imageDirectory, uniqueFileName);
+                    using (var myFile = new FileStream(filePath, FileMode.Create))
+                    {
+                        viewModel.Img.CopyTo(myFile);
+                    }
+                    viewModel.Trip.PhotoUrl = uniqueFileName;
+                }
+            
                 var user = await GetCurrentUserAsync();
                 viewModel.Trip.User = user;
                 viewModel.Trip.ApplicationUserId = user.Id;
@@ -223,6 +236,7 @@ namespace YourPhotoKit.Controllers
             }
 
             ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
                 var user = await GetCurrentUserAsync();
@@ -232,6 +246,7 @@ namespace YourPhotoKit.Controllers
 
                 try
                 {
+                    
                     _context.Update(trip);
                     await _context.SaveChangesAsync();
                 }
@@ -285,6 +300,15 @@ namespace YourPhotoKit.Controllers
         private bool TripExists(int id)
         {
             return _context.Trips.Any(e => e.TripId == id);
+        }
+
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
         }
     }
 }
