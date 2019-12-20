@@ -14,5 +14,11 @@ namespace YourPhotoKit.Models
         public string PhotoUrl { get; set; }
 
         public int TripId { get; set; }
+
+        public TripPhoto(string photoUrl, int tripId)
+        {
+            PhotoUrl = photoUrl;
+            TripId = tripId;
+        }
     }
 }
