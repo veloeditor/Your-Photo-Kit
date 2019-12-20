@@ -52,15 +52,15 @@ namespace YourPhotoKit.Controllers
             }
             else
             {
-                var terms = SearchString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                IQueryable<GearItem> att = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                var searchTerms = SearchString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                IQueryable<GearItem> searchMatch = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
 
-                foreach (var term in terms)
+                foreach (var term in searchTerms)
                 {
-                    att = att.Where(x => x.Title.Contains(term) || x.DatePurchased.Year.ToString().Contains(term));
+                    searchMatch = searchMatch.Where(x => x.Title.Contains(term) || x.DatePurchased.Year.ToString().Contains(term));
                 }
 
-                return View(att.ToList());
+                return View(searchMatch.ToList());
 
 
                 //var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id).Where(g => g.Title.ToLower().Contains(SearchString) || g.DatePurchased.Year.ToString().Contains(SearchString));
