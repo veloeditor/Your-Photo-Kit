@@ -11,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using YourPhotoKit.Data;
 using YourPhotoKit.Models;
-using YourPhotoKit.Models.ReportViews;
+using IronPdf;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace YourPhotoKit.Controllers
 {
@@ -21,12 +23,15 @@ namespace YourPhotoKit.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _config;
+        private IWebHostEnvironment _env;
 
-        public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration config)
+
+        public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration config, IWebHostEnvironment env)
         {
             _context = context;
             _userManager = userManager;
             _config = config;
+            _env = env;
         }
 
         public SqlConnection Connection
@@ -70,6 +75,19 @@ namespace YourPhotoKit.Controllers
                 //return View(await applicationDbContext.ToListAsync());
             }
         }
+
+        //Print Index as PDF
+        //public IActionResult PrintPDF()
+        //{
+        //    // Create a PDF from an existing HTML using C#
+        //    var Renderer = new IronPdf.HtmlToPdf();
+        //    var PathToPDF = Path.Combine(_env.ContentRootPath, "Views/Reports/Index.cshtml");
+        //    var PDF = Renderer.RenderHTMLFileAsPdf(PathToPDF);
+        //    var OutputPath = "GearReport.pdf";
+        //    PDF.SaveAs(OutputPath);
+
+        //    return View();
+        //}
 
         //Insurance List
         public async Task<IActionResult> AllGearReport()
