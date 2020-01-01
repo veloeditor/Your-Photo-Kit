@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<YourPhotoKit.Models.GearItem>
 
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -41,7 +42,7 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.SerialNumber)
                 </th>
-               
+
             </tr>
         </thead>
         <tbody class="">
@@ -49,7 +50,7 @@ else
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
+                        <a href=@Url.Action("Details", "GearItems", new { Id = item.GearItemId })>@Html.DisplayFor(modelItem => item.Title)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Cost)
@@ -60,7 +61,7 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.SerialNumber)
                     </td>
-                   
+
                 </tr>
             }
         </tbody>
@@ -75,6 +76,10 @@ else
             </tr>
         </tfoot>
     </table>
+
 }
+
+<div class="btn btn-sm btn-primary"style="text-align: center;"><a href="javascript:window.print()">Click to Print This Page</a></div>
+<a class="btn btn-sm btn-primary" asp-action="PrintPDF" asp-controller="Reports">Print as PDF</a>
 
 
