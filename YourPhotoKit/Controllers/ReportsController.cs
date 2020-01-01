@@ -79,9 +79,9 @@ namespace YourPhotoKit.Controllers
         //Print Index as PDF
         //public IActionResult PrintPDF()
         //{
-        //    // Create a PDF from an existing HTML using C#
+        //    //Create a PDF from an existing HTML using C#
         //    var Renderer = new IronPdf.HtmlToPdf();
-        //    var PathToPDF = Path.Combine(_env.ContentRootPath, "Views/Reports/Index.cshtml");
+        //    var PathToPDF = Path.Combine(_env.ContentRootPath, "https://localhost:5001/Reports");
         //    var PDF = Renderer.RenderHTMLFileAsPdf(PathToPDF);
         //    var OutputPath = "GearReport.pdf";
         //    PDF.SaveAs(OutputPath);
