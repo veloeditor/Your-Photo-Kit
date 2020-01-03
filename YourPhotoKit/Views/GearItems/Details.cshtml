@@ -15,7 +15,7 @@
         </p>
         <div class="card-body">
             <h4 class="card-title" style="margin-bottom: 5px;">@Html.DisplayFor(model => model.Title)</h4>
-            <h6>@Html.DisplayFor(model => model.gearType.Label)</h6>
+            <small class="text-muted">@Html.DisplayFor(model => model.gearType.Label)</small>
             <p class="card-text">
                 @Html.DisplayFor(model => model.Description)
             </p>
@@ -24,6 +24,14 @@
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.DatePurchased): @Html.DisplayFor(model => model.DatePurchased)</li>
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.SerialNumber):  @Html.DisplayFor(model => model.SerialNumber)</li>
             </ul>
+            @*<h5>Trips:</h5>
+            @foreach (var item in Model.TripGear)
+            {
+                <ul class="list-group list-group-flush" style="width: 300px;">
+                    <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;">@item.Trip.Title</li>
+                </ul>
+
+            }*@
         </div>
         <div class="card-footer" style="text-align: center">
             <small>

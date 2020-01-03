@@ -50,6 +50,8 @@ namespace YourPhotoKit.Controllers
             var gearItem = await _context.GearItems
                 .Include(g => g.User)
                 .Include(g => g.gearType)
+                .Include(g => g.TripGear)
+                .Include(g => g.Trip)
                 .FirstOrDefaultAsync(m => m.GearItemId == id);
             if (gearItem == null)
             {
@@ -231,6 +233,11 @@ namespace YourPhotoKit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //remove GearItemId from TripGear join table
+            var tripGearItem = await _context.TripGear.Where(tg => tg.GearItemId == id).ToListAsync();
+            _context.TripGear.RemoveRange(tripGearItem);
+            await _context.SaveChangesAsync();
+            
             var gearItem = await _context.GearItems.FindAsync(id);
             var currentFileName = gearItem.PhotoUrl;
             if (currentFileName != null)
