@@ -13,7 +13,7 @@
         <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-dark border-bottom box-shadow mb-3" style="padding-top: 3px; padding-bottom: 3px;">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-          <img src="~/logos/Logo Symbol.png"> YourPhotoKit</a>
+          <img style="margin-right: 5px;" src="~/logos/Logo Symbol.png"> YourPhotoKit</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,15 +38,15 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" id="main_background">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer">
-        <div class="container" style="color:whitesmoke;">
-            &copy; 2019 - YourPhotoKit
+        <div class="container">
+            <p style="color: whitesmoke;">&copy; 2019 - YourPhotoKit</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
