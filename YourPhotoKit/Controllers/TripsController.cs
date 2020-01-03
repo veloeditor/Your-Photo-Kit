@@ -337,6 +337,11 @@ namespace YourPhotoKit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //remove TripId from TripGear join table
+            var tripGearTrip = await _context.TripGear.Where(tg => tg.TripId == id).ToListAsync();
+            _context.TripGear.RemoveRange(tripGearTrip);
+            await _context.SaveChangesAsync();
+
             var trip = await _context.Trips.FindAsync(id);
             var currentFileName = trip.PhotoUrl;
             if (currentFileName != null)
