@@ -4,14 +4,14 @@
     ViewData["Title"] = "TripGearIndex";
 }
 
-<h3>Add Gear To This Trip</h3>
+<h3 style="text-align: center; margin-bottom: 40px;">Add Gear To Your @Model.Trip.Title Trip</h3>
 <div class="container">
 <div>
-    <table class="table table-sm w-25">
+    <table class="table table-sm w-25" style="margin: auto;">
         <thead>
             <tr>
                 <th>
-                    <h6 style="text-align: center">Your Available Gear</h6>
+                    <h6 style="text-align: left">Your Available Gear</h6>
                 </th>
 
             </tr>
@@ -45,12 +45,12 @@
     </table>
 </div>
 <div>
-    <table class="table table-sm w-25">
+    <table class="table table-sm w-25" style="margin: auto; margin-top: 40px;">
 
         <thead>
             <tr>
                 <th>
-                    <h6 style="text-align: center">Your Packed Gear</h6>
+                    <h6 style="text-align: left">Your Packed Gear</h6>
                 </th>
             </tr>
         </thead>
@@ -79,6 +79,7 @@
 
 
 </div>
+<div style="text-align: center;">
+    <hr />
+    <a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
 </div>
-<hr />
-<a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
