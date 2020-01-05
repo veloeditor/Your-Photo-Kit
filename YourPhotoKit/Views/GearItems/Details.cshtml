@@ -10,7 +10,7 @@
     <div class="card" style="width: 25rem;">
         <p style="margin: auto;">
             <object data="~/images/@Model.PhotoUrl" type="image/jpg" style="margin:auto;">
-                <img style="width:100%; height:auto;" src="~/images/placeholder_gear.jpeg"/>
+                <img style="width:100%; height:auto;" src="~/images/placeholder_gear.jpeg" />
             </object>
         </p>
         <div class="card-body">
@@ -25,13 +25,12 @@
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.SerialNumber):  @Html.DisplayFor(model => model.SerialNumber)</li>
             </ul>
             @*<h5>Trips:</h5>
-            @foreach (var item in Model.TripGear)
-            {
-                <ul class="list-group list-group-flush" style="width: 300px;">
-                    <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;">@item.Trip.Title</li>
-                </ul>
-
-            }*@
+                @foreach (var item in Model.TripGear)
+                {
+                    <ul class="list-group list-group-flush" style="width: 300px;">
+                        <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;">@item.Trip.Title</li>
+                    </ul>
+                }*@
         </div>
         <div class="card-footer" style="text-align: center">
             <small>
@@ -40,10 +39,5 @@
                 <a class="btn btn-sm btn-light" asp-action="Index">Back to List</a>
             </small>
         </div>
-       </div>
     </div>
-
-
-
-
-
+</div>

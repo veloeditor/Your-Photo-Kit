@@ -56,7 +56,7 @@ namespace YourPhotoKit.Controllers
                 .Include(g => g.Trip)
                 .FirstOrDefaultAsync(m => m.GearItemId == id);
 
-            
+
 
             if (gearItem == null)
             {
