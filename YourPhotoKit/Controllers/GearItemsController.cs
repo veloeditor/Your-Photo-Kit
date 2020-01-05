@@ -47,12 +47,17 @@ namespace YourPhotoKit.Controllers
                 return NotFound();
             }
 
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
             var gearItem = await _context.GearItems
                 .Include(g => g.User)
                 .Include(g => g.gearType)
                 .Include(g => g.TripGear)
                 .Include(g => g.Trip)
                 .FirstOrDefaultAsync(m => m.GearItemId == id);
+
+            
+
             if (gearItem == null)
             {
                 return RedirectToAction(nameof(Index));
