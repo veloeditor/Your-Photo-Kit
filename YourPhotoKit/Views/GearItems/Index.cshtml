@@ -7,12 +7,15 @@
 <h3 style="text-align: center; margin-bottom: 0px; color: whitesmoke;">Your Photo Kit</h3>
 
 <p style="text-align: center; margin-top: 10px;">
-    <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke;">Add Gear</a>
+    <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke; margin-bottom: 15px;">Add Gear</a>
 </p>
 
 @if (Model.ToList().Count == 0)
 {
-    <p> Let's add some gear to your kit!  Click the link above to add some new gear.</p>
+<div style="margin: auto; text-align: center; margin-top: 50px;">
+    <i class="fas fa-camera fa-3x" style="text-align: center; margin-bottom: 10px;"></i>
+    <h5 style="margin: auto; text-align: center;"> Let's add some gear to your kit!  Click the link above to add some new gear.</h5>
+</div>
 }
 else
 {

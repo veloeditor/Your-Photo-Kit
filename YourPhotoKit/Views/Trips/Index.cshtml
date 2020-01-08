@@ -8,13 +8,19 @@
 @*<p style="text-align: center">Here is a list of your trips.</p>*@
 
 <p style="text-align: center;">
-    <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke;">Add a new trip</a>
+    <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke; margin-bottom: 15px;">Add a new trip</a>
 </p>
 
 
 @if (Model.ToList().Count == 0)
 {
-    <p>You currently do not have any trips to show. Create a trip and pack some gear!</p>
+    <div style="        margin: auto;
+        text-align: center;
+        margin-top: 50px;">
+        <i class="fas fa-suitcase fa-3x" style="text-align: center; margin-bottom: 10px;"></i>
+        <h5 style="margin: auto; text-align: center;"> You currently do not have any trips to show. Create a trip and pack some gear!</h5>
+    </div>
+  
 }
 else
 {
@@ -31,7 +37,7 @@ else
                     <h5 class="card-title">@Html.DisplayFor(modelitem => item.Title)</h5>
                     <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
                     <p class="card-text">@Html.DisplayFor(modelitem => item.StartDate)</p>
-                    
+
                 </div>
                 <div class="card-footer">
                     <a class="btn btn-sm btn-outline-light" asp-action="Details" asp-route-id="@item.TripId">Details</a> |
@@ -54,7 +60,7 @@ else
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelitem => item.Title)</h5>
                     <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
-                   
+
                     @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
                 </div>
                 <div class="card-footer" style="color: whitesmoke;">
