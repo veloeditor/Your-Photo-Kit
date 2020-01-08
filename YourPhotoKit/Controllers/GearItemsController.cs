@@ -48,6 +48,7 @@ namespace YourPhotoKit.Controllers
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            
 
             var gearItem = await _context.GearItems
                 .Include(g => g.User)
