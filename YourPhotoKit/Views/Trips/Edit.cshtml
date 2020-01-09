@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h3 style="text-align: center; color: whitesmoke; margin: auto;">Edit Your Trip</h3>
+    <h3 style="text-align: center; color: whitesmoke; margin: auto;">Edit the @Model.Trip.Title Trip</h3>
 
 <h4></h4>
 <hr />
@@ -39,17 +39,18 @@
                 <input asp-for="Trip.UserComments" class="form-control" />
                 <span asp-validation-for="Trip.UserComments" class="text-danger"></span>
                 </div>
-                @*<div class="form-group">
-                    <label asp-for="Img"></label>
-                    <input asp-for="Img" type="file">
-                    <span asp-validation-for="Img"></span>
-                </div>*@
-                <div class="form-group">
-                    @Html.HiddenFor(m => m.Trip.PhotoUrl)
+
+            <div class="form-group">
+                <label asp-for="Img"></label>
+                <input asp-for="Img" type="file">
+                <span asp-validation-for="Img"></span>
+            </div>
+            <div class="form-group">
+                @Html.HiddenFor(m => m.Trip.PhotoUrl)
+            </div>
+            <div class="form-group">
+                <input asp-page-handler="Upload" type="submit" value="Save" class="btn btn-primary" /> |  <a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
                 </div>
-                <div class="form-group">
-                    <input asp-page-handler="Upload" type="submit" value="Save" class="btn btn-primary" /> |  <a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
-                    </div>
         </form>
     </div>
 </div>

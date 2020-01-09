@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using YourPhotoKit.Data;
 using YourPhotoKit.Models;
@@ -80,7 +82,7 @@ namespace YourPhotoKit.Controllers
             var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
             //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
             var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any()).ToListAsync();
-
+            
             var trip = await _context.Trips
                 .Include(t => t.User)
                 .Include(t => t.TripGear)
@@ -94,6 +96,9 @@ namespace YourPhotoKit.Controllers
                 PickedItems = pickedItems
 
             };
+
+            string body = ResolveLinks(viewModel.Trip.UserComments);
+
 
             if (trip == null)
             {
@@ -211,13 +216,18 @@ namespace YourPhotoKit.Controllers
             }
 
             var @trip = await _context.Trips.FindAsync(id);
+        
 
             var viewModel = new CreateandEditTripViewModel()
             {
-                Trip = @trip
+                Trip = @trip,
+                
             };
 
-           
+            var userComments = viewModel.Trip.UserComments;
+           string body = ResolveLinks(viewModel.Trip.UserComments);
+
+
             if (@trip == null)
             {
                 return NotFound();
@@ -246,15 +256,20 @@ namespace YourPhotoKit.Controllers
                 try
                 {
                     var currentFileName = viewModel.Trip.PhotoUrl;
-                    //This if statement will check to see if there is a photo already on the gear item and the photo replacing it is a new file (with unique name).
-                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
+                    var user = await GetCurrentUserAsync();
+                    var tripPhoto = await _context.TripPhotos.ToListAsync();
+                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName)
                     {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.Trip.User = user;
-                        viewModel.Trip.ApplicationUserId = user.Id;
-                        var images = Directory.GetFiles("wwwroot/images");
-                        var fileToDelete = images.First(i => i.Contains(currentFileName));
-                        System.IO.File.Delete(fileToDelete);
+                        if (currentFileName != null)
+                        {
+                            
+                            viewModel.Trip.User = user;
+                            viewModel.Trip.ApplicationUserId = user.Id;
+                           
+                            var images = Directory.GetFiles("wwwroot/images");
+                            var fileToDelete = images.First(i => i.Contains(currentFileName));
+                            System.IO.File.Delete(fileToDelete);
+                        }
                         var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
                         var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                         var filePath = Path.Combine(imageDirectory, uniqueFileName);
@@ -263,20 +278,18 @@ namespace YourPhotoKit.Controllers
                             viewModel.Img.CopyTo(myFile);
                         }
                         viewModel.Trip.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
+                    }
+                   
+                    viewModel.Trip.User = user;
+                    viewModel.Trip.ApplicationUserId = user.Id;
+                   
+                    //var userComments = Linkify(viewModel.Trip.UserComments);
+                    //viewModel.Trip.UserComments = userComments;
+                    _context.Update(viewModel.Trip);
+                    await _context.SaveChangesAsync();
 
-                    }
-                    //The else statement is a basic edit post with no picture consideration
-                    else
-                    {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.Trip.User = user;
-                        viewModel.Trip.ApplicationUserId = user.Id;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
-                    }
                 }
+
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TripExists(viewModel.Trip.TripId))
@@ -348,6 +361,80 @@ namespace YourPhotoKit.Controllers
                       + "_"
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
+        }
+
+        private static readonly Regex regex = new Regex("((http://|www\\.)([A-Z0-9.-:]{1,})\\.[0-9A-Z?;~&#=\\-_\\./]{2,})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly string link = "<a href=\"{0}{1}\">{2}</a>";
+
+        public static string ResolveLinks(string body)
+        {
+            if (string.IsNullOrEmpty(body))
+                return body;
+
+            foreach (Match match in regex.Matches(body))
+            {
+                if (!match.Value.Contains("://"))
+                {
+                    body = body.Replace(match.Value, string.Format(link, "http://", match.Value, ShortenUrl(match.Value, 50)));
+                }
+                else
+                {
+                    body = body.Replace(match.Value, string.Format(link, string.Empty, match.Value, ShortenUrl(match.Value, 50)));
+                }
+            }
+
+            return body;
+        }
+
+        private static string ShortenUrl(string url, int max)
+        {
+            if (url.Length <= max)
+                return url;
+
+            // Remove the protocal
+            int startIndex = url.IndexOf("://");
+            if (startIndex > -1)
+                url = url.Substring(startIndex + 3);
+
+            if (url.Length <= max)
+                return url;
+
+            // Remove the folder structure
+            int firstIndex = url.IndexOf("/") + 1;
+            int lastIndex = url.LastIndexOf("/");
+            if (firstIndex < lastIndex)
+                url = url.Replace(url.Substring(firstIndex, lastIndex - firstIndex), "...");
+
+            if (url.Length <= max)
+                return url;
+
+            // Remove URL parameters
+            int queryIndex = url.IndexOf("?");
+            if (queryIndex > -1)
+                url = url.Substring(0, queryIndex);
+
+            if (url.Length <= max)
+                return url;
+
+            // Remove URL fragment
+            int fragmentIndex = url.IndexOf("#");
+            if (fragmentIndex > -1)
+                url = url.Substring(0, fragmentIndex);
+
+            if (url.Length <= max)
+                return url;
+
+            // Shorten page
+            firstIndex = url.LastIndexOf("/") + 1;
+            lastIndex = url.LastIndexOf(".");
+            if (lastIndex - firstIndex > 10)
+            {
+                string page = url.Substring(firstIndex, lastIndex - firstIndex);
+                int length = url.Length - max + 3;
+                url = url.Replace(page, "..." + page.Substring(length));
+            }
+
+            return url;
         }
     }
 }

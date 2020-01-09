@@ -18,6 +18,7 @@ namespace YourPhotoKit.Models.TripModels
         public IFormFile Img { get; set; }
 
 
+
         public List<SelectListItem> GearItemOptions
         {
             get
