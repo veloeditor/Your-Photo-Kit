@@ -97,8 +97,7 @@ namespace YourPhotoKit.Controllers
 
             };
 
-            string body = ResolveLinks(viewModel.Trip.UserComments);
-
+            Linkify(viewModel.Trip.UserComments);
 
             if (trip == null)
             {
@@ -224,8 +223,7 @@ namespace YourPhotoKit.Controllers
                 
             };
 
-            var userComments = viewModel.Trip.UserComments;
-           string body = ResolveLinks(viewModel.Trip.UserComments);
+            Linkify(viewModel.Trip.UserComments);
 
 
             if (@trip == null)
@@ -282,9 +280,9 @@ namespace YourPhotoKit.Controllers
                    
                     viewModel.Trip.User = user;
                     viewModel.Trip.ApplicationUserId = user.Id;
-                   
-                    //var userComments = Linkify(viewModel.Trip.UserComments);
-                    //viewModel.Trip.UserComments = userComments;
+
+                    var userComments = viewModel.Trip.UserComments;
+                    userComments = Linkify(userComments);
                     _context.Update(viewModel.Trip);
                     await _context.SaveChangesAsync();
 
@@ -363,78 +361,28 @@ namespace YourPhotoKit.Controllers
                       + Path.GetExtension(fileName);
         }
 
-        private static readonly Regex regex = new Regex("((http://|www\\.)([A-Z0-9.-:]{1,})\\.[0-9A-Z?;~&#=\\-_\\./]{2,})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly string link = "<a href=\"{0}{1}\">{2}</a>";
-
-        public static string ResolveLinks(string body)
+        protected string Linkify(string SearchText)
         {
-            if (string.IsNullOrEmpty(body))
-                return body;
+            // this will find links like:
+            // http://www.mysite.com
+            // as well as any links with other characters directly in front of it like:
+            // href="http://www.mysite.com"
+            // you can then use your own logic to determine which links to linkify
+            Regex regx = new Regex(@"\b(((\S+)?)(@|mailto\:|(news|(ht|f)tp(s?))\://)\S+)\b", RegexOptions.IgnoreCase);
+            SearchText = SearchText.Replace("&nbsp;", " ");
+            MatchCollection matches = regx.Matches(SearchText);
 
-            foreach (Match match in regex.Matches(body))
+            foreach (Match match in matches)
             {
-                if (!match.Value.Contains("://"))
-                {
-                    body = body.Replace(match.Value, string.Format(link, "http://", match.Value, ShortenUrl(match.Value, 50)));
-                }
-                else
-                {
-                    body = body.Replace(match.Value, string.Format(link, string.Empty, match.Value, ShortenUrl(match.Value, 50)));
+                if (match.Value.StartsWith("http"))
+                { // if it starts with anything else then dont linkify -- may already be linked!
+                    SearchText = SearchText.Replace(match.Value, "<a href='" + match.Value + "'>" + match.Value + "</a>");
                 }
             }
 
-            return body;
+            return SearchText;
         }
 
-        private static string ShortenUrl(string url, int max)
-        {
-            if (url.Length <= max)
-                return url;
 
-            // Remove the protocal
-            int startIndex = url.IndexOf("://");
-            if (startIndex > -1)
-                url = url.Substring(startIndex + 3);
-
-            if (url.Length <= max)
-                return url;
-
-            // Remove the folder structure
-            int firstIndex = url.IndexOf("/") + 1;
-            int lastIndex = url.LastIndexOf("/");
-            if (firstIndex < lastIndex)
-                url = url.Replace(url.Substring(firstIndex, lastIndex - firstIndex), "...");
-
-            if (url.Length <= max)
-                return url;
-
-            // Remove URL parameters
-            int queryIndex = url.IndexOf("?");
-            if (queryIndex > -1)
-                url = url.Substring(0, queryIndex);
-
-            if (url.Length <= max)
-                return url;
-
-            // Remove URL fragment
-            int fragmentIndex = url.IndexOf("#");
-            if (fragmentIndex > -1)
-                url = url.Substring(0, fragmentIndex);
-
-            if (url.Length <= max)
-                return url;
-
-            // Shorten page
-            firstIndex = url.LastIndexOf("/") + 1;
-            lastIndex = url.LastIndexOf(".");
-            if (lastIndex - firstIndex > 10)
-            {
-                string page = url.Substring(firstIndex, lastIndex - firstIndex);
-                int length = url.Length - max + 3;
-                url = url.Replace(page, "..." + page.Substring(length));
-            }
-
-            return url;
-        }
     }
 }
