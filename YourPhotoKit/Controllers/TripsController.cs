@@ -232,13 +232,14 @@ namespace YourPhotoKit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CreateandEditTripViewModel viewModel)
         {
+
             if (id != viewModel.Trip.TripId)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("GearItem.UserId");
-            ModelState.Remove("GearItem.User");
+            ModelState.Remove("Trip.UserId");
+            ModelState.Remove("Trip.User");
 
             if (ModelState.IsValid)
             {
@@ -246,45 +247,25 @@ namespace YourPhotoKit.Controllers
                 {
                     var currentFileName = viewModel.Trip.PhotoUrl;
                     //This if statement will check to see if there is a photo already on the gear item and the photo replacing it is a new file (with unique name).
-                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName)
+                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
                     {
                         var user = await GetCurrentUserAsync();
                         viewModel.Trip.User = user;
                         viewModel.Trip.ApplicationUserId = user.Id;
+                        var images = Directory.GetFiles("wwwroot/images");
+                        var fileToDelete = images.First(i => i.Contains(currentFileName));
+                        System.IO.File.Delete(fileToDelete);
+                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
+                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
+                        using (var myFile = new FileStream(filePath, FileMode.Create))
+                        {
+                            viewModel.Img.CopyTo(myFile);
+                        }
+                        viewModel.Trip.PhotoUrl = uniqueFileName;
+                        _context.Update(viewModel.Trip);
+                        await _context.SaveChangesAsync();
 
-                        if (currentFileName != null)
-                        {
-                            var images = Directory.GetFiles("wwwroot/images");
-                            var fileToDelete = images.First(i => i.Contains(currentFileName));
-                            System.IO.File.Delete(fileToDelete);
-                        }
-                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
-                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
-                        using (var myFile = new FileStream(filePath, FileMode.Create))
-                        {
-                            viewModel.Img.CopyTo(myFile);
-                        }
-                        viewModel.Trip.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
-                    }
-                    //This else if statement allows the user to add a new photo and it will replace the temp image
-                    else if (viewModel.Trip.PhotoUrl == null)
-                    {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.Trip.User = user;
-                        viewModel.Trip.ApplicationUserId = user.Id;
-                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
-                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
-                        using (var myFile = new FileStream(filePath, FileMode.Create))
-                        {
-                            viewModel.Img.CopyTo(myFile);
-                        }
-                        viewModel.Trip.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
                     }
                     //The else statement is a basic edit post with no picture consideration
                     else

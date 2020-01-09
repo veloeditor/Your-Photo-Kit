@@ -20,7 +20,7 @@ namespace YourPhotoKit.Models
 
         public bool IsPacked { get; set; }
 
-        public Trip Trip { get; set; } = new Trip();
+        public Trip Trip { get; set; }
 
         [Display(Name = "Packed Gear")]
         public GearItem GearItem { get; set; }

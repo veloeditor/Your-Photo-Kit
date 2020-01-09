@@ -39,24 +39,10 @@ namespace YourPhotoKit.Models
 
         [Display(Name = "Comments")]
         public string UserComments { get; set; }
-
         public string ApplicationUserId { get; set; }
-        
         public ApplicationUser User { get; set; }
-
-        //public Object getWeatherForecast()
-        //{
-        //    string url = "";
-        //    var client = new WebClient();
-        //    var content = client.DownloadString(url);
-        //    var serializer = new JavaScriptSerializer();
-
-        //}
-
         public virtual ICollection<GearItem> GearItems { get; set; }
         public virtual ICollection<TripGear> TripGear { get; set; }
         //public virtual ICollection<TripGear> PickedItems { get; set; }
-
-
     }
 }
