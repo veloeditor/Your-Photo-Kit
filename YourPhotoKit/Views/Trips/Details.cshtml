@@ -4,12 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
-<h3 style="text-align: center">Trip Details</h3>
+<h3 style="text-align: center">@Model.Trip.Title Trip Details</h3>
 
-<div class="card text-left" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 10px;">
+<div class="card text-left" style="margin-left: 10px; flex-basis: 60%; margin-right: 20px; margin-bottom: 10px;">
     <p style="margin: auto; text-align: center;">
 
-        <object data="~/images/@Model.Trip.PhotoUrl" type="image/jpg" style="margin:auto;">
+        <object data="~/images/@Model.Trip.PhotoUrl" type="image/jpg" style="margin:auto; width: 600px">
             <img style="width:60%; height:auto;" src="~/images/trip_placeholder.png" />
         </object>
     </p>

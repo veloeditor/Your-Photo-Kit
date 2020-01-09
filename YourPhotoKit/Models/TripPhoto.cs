@@ -11,6 +11,7 @@ namespace YourPhotoKit.Models
         [Key]
         public int TripPhotoId {get; set;}
 
+        [Display(Name = "Trip Gallery Link")]
         public string PhotoUrl { get; set; }
 
         public int TripId { get; set; }

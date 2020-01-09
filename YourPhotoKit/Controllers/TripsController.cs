@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using YourPhotoKit.Data;
 using YourPhotoKit.Models;
@@ -80,7 +82,7 @@ namespace YourPhotoKit.Controllers
             var pickedItems = await _context.TripGear.Include(tg => tg.GearItem).Where(tg => tg.TripId == id).ToListAsync();
             //var gearItems = await _context.GearItems.Where(g => g.User == user).ToListAsync();
             var gearItems = await _context.GearItems.Include(gi => gi.TripGear).Where(gi => gi.User == user && !gi.TripGear.Any()).ToListAsync();
-
+            
             var trip = await _context.Trips
                 .Include(t => t.User)
                 .Include(t => t.TripGear)
@@ -94,6 +96,8 @@ namespace YourPhotoKit.Controllers
                 PickedItems = pickedItems
 
             };
+
+            Linkify(viewModel.Trip.UserComments);
 
             if (trip == null)
             {
@@ -211,13 +215,17 @@ namespace YourPhotoKit.Controllers
             }
 
             var @trip = await _context.Trips.FindAsync(id);
+        
 
             var viewModel = new CreateandEditTripViewModel()
             {
-                Trip = @trip
+                Trip = @trip,
+                
             };
 
-           
+            Linkify(viewModel.Trip.UserComments);
+
+
             if (@trip == null)
             {
                 return NotFound();
@@ -246,15 +254,20 @@ namespace YourPhotoKit.Controllers
                 try
                 {
                     var currentFileName = viewModel.Trip.PhotoUrl;
-                    //This if statement will check to see if there is a photo already on the gear item and the photo replacing it is a new file (with unique name).
-                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
+                    var user = await GetCurrentUserAsync();
+                    var tripPhoto = await _context.TripPhotos.ToListAsync();
+                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName)
                     {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.Trip.User = user;
-                        viewModel.Trip.ApplicationUserId = user.Id;
-                        var images = Directory.GetFiles("wwwroot/images");
-                        var fileToDelete = images.First(i => i.Contains(currentFileName));
-                        System.IO.File.Delete(fileToDelete);
+                        if (currentFileName != null)
+                        {
+                            
+                            viewModel.Trip.User = user;
+                            viewModel.Trip.ApplicationUserId = user.Id;
+                           
+                            var images = Directory.GetFiles("wwwroot/images");
+                            var fileToDelete = images.First(i => i.Contains(currentFileName));
+                            System.IO.File.Delete(fileToDelete);
+                        }
                         var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
                         var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                         var filePath = Path.Combine(imageDirectory, uniqueFileName);
@@ -263,20 +276,18 @@ namespace YourPhotoKit.Controllers
                             viewModel.Img.CopyTo(myFile);
                         }
                         viewModel.Trip.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
+                    }
+                   
+                    viewModel.Trip.User = user;
+                    viewModel.Trip.ApplicationUserId = user.Id;
 
-                    }
-                    //The else statement is a basic edit post with no picture consideration
-                    else
-                    {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.Trip.User = user;
-                        viewModel.Trip.ApplicationUserId = user.Id;
-                        _context.Update(viewModel.Trip);
-                        await _context.SaveChangesAsync();
-                    }
+                    var userComments = viewModel.Trip.UserComments;
+                    userComments = Linkify(userComments);
+                    _context.Update(viewModel.Trip);
+                    await _context.SaveChangesAsync();
+
                 }
+
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TripExists(viewModel.Trip.TripId))
@@ -349,5 +360,29 @@ namespace YourPhotoKit.Controllers
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
         }
+
+        protected string Linkify(string SearchText)
+        {
+            // this will find links like:
+            // http://www.mysite.com
+            // as well as any links with other characters directly in front of it like:
+            // href="http://www.mysite.com"
+            // you can then use your own logic to determine which links to linkify
+            Regex regx = new Regex(@"\b(((\S+)?)(@|mailto\:|(news|(ht|f)tp(s?))\://)\S+)\b", RegexOptions.IgnoreCase);
+            SearchText = SearchText.Replace("&nbsp;", " ");
+            MatchCollection matches = regx.Matches(SearchText);
+
+            foreach (Match match in matches)
+            {
+                if (match.Value.StartsWith("http"))
+                { // if it starts with anything else then dont linkify -- may already be linked!
+                    SearchText = SearchText.Replace(match.Value, "<a href='" + match.Value + "'>" + match.Value + "</a>");
+                }
+            }
+
+            return SearchText;
+        }
+
+
     }
 }
