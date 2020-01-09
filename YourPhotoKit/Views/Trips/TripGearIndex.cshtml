@@ -7,11 +7,11 @@
 <h3 style="text-align: center; margin-bottom: 40px;">Add Gear To Your @Model.Trip.Title Trip</h3>
 <div class="container">
 <div>
-    <table class="table table-sm w-25" style="margin: auto;">
+    <table class="table table-sm w-25" style="margin: auto; border-top: hidden;">
         <thead>
             <tr>
                 <th>
-                    <h6 style="text-align: left">Your Available Gear</h6>
+                    <h6 style="text-align: left; border-top: hidden;">Your Available Gear</h6>
                 </th>
 
             </tr>
@@ -45,12 +45,12 @@
     </table>
 </div>
 <div>
-    <table class="table table-sm w-25" style="margin: auto; margin-top: 40px;">
+    <table class="table table-sm w-25" style="margin: auto; margin-top: 40px; border-top: hidden;">
 
         <thead>
             <tr>
                 <th>
-                    <h6 style="text-align: left">Your Packed Gear</h6>
+                    <h6 style="text-align: left; border-top: hidden;">Your Packed Gear</h6>
                 </th>
             </tr>
         </thead>
@@ -81,5 +81,5 @@
 </div>
 <div style="text-align: center;">
     <hr />
-    <a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
+    <a class="btn btn-sm btn-light" asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
 </div>
