@@ -4,38 +4,38 @@
     ViewData["Title"] = "Delete";
 }
 
-<h3 style="text-align: center; color: whitesmoke; margin: auto;">Delete Your Gear</h3>
+<h3 style="text-align: center; color: whitesmoke; margin: auto;">Delete your <span style="font-weight:bold">@Model.Title</span></h3>
 
 <h6 style ="text-align: center; color: whitesmoke; margin: auto;"> Are you sure you want to delete this?</h6>
-<div>
+<div style="border-radius: 10px;">
     
     <hr />
-    <dl class="row" style="background-color: whitesmoke; color: black; margin: auto; padding-top: 15px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; max-width: 700px">
-        <dt class = "col-sm-3">
+    <dl class="row" style="background-color: whitesmoke; color: black; margin: auto; padding-top: 15px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; max-width: 700px; border-radius: 10px;">
+        <dt class = "col-sm-3" style="text-decoration: underline">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-4">
+        <dt class = "col-sm-4" style="text-decoration: underline">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-3">
+        <dt class = "col-sm-3" style="text-decoration: underline">
             @Html.DisplayNameFor(model => model.Cost)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Cost)
         </dd>
-        <dt class = "col-sm-3">
+        <dt class = "col-sm-3" style="text-decoration: underline">
             @Html.DisplayNameFor(model => model.DatePurchased)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DatePurchased)
         </dd>
-        <dt class = "col-sm-3">
+        <dt class = "col-sm-3" style="text-decoration: underline">
             @Html.DisplayNameFor(model => model.SerialNumber)
         </dt>
         <dd class = "col-sm-10">
@@ -43,9 +43,9 @@
         </dd>
     </dl>
 
-    <form style="text-align: center; margin: auto;" asp-action="Delete">
+    <form style="text-align: center; margin: auto; margin-top: 10px;" asp-action="Delete">
         <input type="hidden" asp-for="GearItemId" />
-        <input type="submit" value="Delete" class="btn btn-small btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-sm btn-danger" /> |
         <a class="back_index btn btn-sm btn-light" asp-action="Index">Back to List</a>
     </form>
 </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h3 style="text-align: center; margin-top: 10px; margin-bottom: 7px;">Your Trips</h3>
+<h3 style="text-align: center; margin-top: 0px; font-weight: 700">Your Trips</h3>
 @*<p style="text-align: center">Here is a list of your trips.</p>*@
 
 <p style="text-align: center;">
@@ -24,19 +24,18 @@
 }
 else
 {
-    <br />
     @foreach (var item in Model)
     {
         if (item.EndDate >= DateTime.Today)
         {
-            <div class="card text-left" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 10px;">
+            <div class="card text-left" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 15px;">
                 <div class="card-header">
                     Upcoming Trip
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelitem => item.Title)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
-                    <p class="card-text">@Html.DisplayFor(modelitem => item.StartDate)</p>
+                    <h5 class="card-title" style="font-weight: 700; margin-bottom: 5px;">@Html.DisplayFor(modelitem => item.Title)</h5>
+                    <p class="card-text" style="margin-bottom: 5px;">@Html.DisplayFor(modelitem => item.Description)</p>
+                    <p class="card-text" style="margin-top: -3px;">Trip Date: @Html.DisplayFor(modelitem => item.StartDate)</p>
 
                 </div>
                 <div class="card-footer">
@@ -53,13 +52,13 @@ else
     {
         if (item.EndDate <= DateTime.Today)
         {
-            <div class="card bg-light mb-3" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 10px;">
+            <div class="card bg-light mb-3" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 15px;">
                 <div class="card-header">
                     Past Trip
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelitem => item.Title)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
+                    <h5 class="card-title" style="font-weight: 700; margin-bottom: 5px;">@Html.DisplayFor(modelitem => item.Title)</h5>
+                    <p class="card-text" style="margin-bottom: 5px;"> @Html.DisplayFor(modelitem => item.Description)</p>
 
                     @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
                 </div>

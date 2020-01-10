@@ -4,13 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
-    <h3 style="text-align:center; color: gainsboro;">@Model.Title Details</h3>
+    <h3 style="text-align:center; color: gainsboro;"><span style="font-weight:700">@Model.Title</span> Details</h3>
 
 <div class="card-deck" style="max-width: 700px; margin:auto">
     <div class="card" style="width: 25rem;">
         <p style="margin: auto;">
             <object data="~/images/@Model.PhotoUrl" type="image/jpg" style="margin:auto;">
-                <img style="width:100%; height:auto;" src="~/images/placeholder_gear.jpeg" />
+                <img style="width:100%; height:auto; margin-top: 10px" src="~/images/placeholder_gear.jpeg" />
             </object>
         </p>
         <div class="card-body">
