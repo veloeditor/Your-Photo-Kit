@@ -49,6 +49,8 @@ namespace YourPhotoKit.Controllers
         public async Task<IActionResult> Index(string SearchString)
         {
             var user = await GetCurrentUserAsync();
+            var searchTerm = SearchString;
+            ViewBag.value = searchTerm;
 
             if (SearchString == null)
             {
