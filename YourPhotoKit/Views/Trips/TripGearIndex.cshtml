@@ -6,80 +6,103 @@
 
 <h3 style="text-align: center; margin-bottom: 40px;">Add Gear To Your <span style="font-weight: 700">@Model.Trip.Title</span> Trip</h3>
 <div class="container">
-<div>
-    <table class="table table-sm w-25" style="margin: auto; border-top: hidden;">
-        <thead>
-            <tr>
-                <th>
-                    <h6 style="text-align: left; border-top: hidden;">Your Available Gear</h6>
-                </th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if (TempData["notice"] != null)
-            {
-                <p style="color:red;">@TempData["notice"]</p>
-            }
-
-            @foreach (var item in Model.GearItems)
-            {
-
+    <div>
+        <table class="table table-sm w-25" style="margin: auto; border-top: hidden;">
+            <thead>
                 <tr>
-                    <td width="90%">
-                        <span>@Html.DisplayFor(modelItem => item.Title)</span>
-                    </td>
-                    <td width="10%">
-                        <form asp-action="AddTripGear" asp-controller="Trips">
+                    <th>
+                        <h6 style="text-align: left; border-top: hidden; font-weight: 700; margin-bottom: 0px;">Your Available Gear</h6>
+                    </th>
 
-                            <input label="TripId" type="hidden" asp-for="Trip.TripId" />
-                            <input name="GearItemId" type="hidden" value="@item.GearItemId" />
-                            <input type="submit" value="Add" class="btn-sm btn-primary" />
-                        </form>
-                    </td>
                 </tr>
+            </thead>
+            <tbody style="background-color: azure; color: black;">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @if (TempData["notice"] != null)
+                {
+                    <p style="color:red;">@TempData["notice"]</p>
+                }
 
-            }
-        </tbody>
-    </table>
-</div>
-<div>
-    <table class="table table-sm w-25" style="margin: auto; margin-top: 40px; border-top: hidden;">
+                @foreach (var item in Model.GearItems)
+                {
 
-        <thead>
-            <tr>
-                <th>
-                    <h6 style="text-align: left; border-top: hidden;">Your Packed Gear</h6>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.PickedItems)
+                    <tr>
+                        <td width="90%">
+                            <span>@Html.DisplayFor(modelItem => item.Title)</span>
+                        </td>
+                        <td width="10%">
+                            <form asp-action="AddTripGear" asp-controller="Trips">
+
+                                <input label="TripId" type="hidden" asp-for="Trip.TripId" />
+                                <input name="GearItemId" type="hidden" value="@item.GearItemId" />
+                                <input type="submit" value="Add" class="btn-sm btn-primary" />
+                            </form>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table class="table table-sm w-25" style="margin: auto; margin-top: 40px; border-top: hidden;">
+
+
+            @if (Model.PickedItems.Count == 0)
             {
+                <thead>
+                    <tr>
+                        <th>
+                            <h6 style="text-align: left; border-top: hidden; font-weight: 700; margin-bottom: 0px;">Your Packed Gear</h6>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h6 style="color: whitesmoke;">You do not have any packed items.</h6>
+                        </td>
+                    </tr>
+                </tbody>
 
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GearItem.Title)
-                    </td>
-                    <td width="10%">
-                        <form asp-action="RemoveTripGear" asp-controller="Trips">
-
-                            <input label="TripId" type="hidden" asp-for="Trip.TripId" />
-                            <input name="GearItemId" type="hidden" value="@item.GearItemId" />
-                            <input type="submit" value="Remove" class="btn-sm btn-danger" />
-                        </form>
-                    </td>
-                </tr>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <thead>
+                    <tr>
+                        <th>
+                            <h6 style="text-align: left; border-top: hidden; font-weight: 700; margin-bottom: 0px;">Your Packed Gear</h6>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody style="background-color: azure; color: black;">
+                    @foreach (var item in Model.PickedItems)
+                    {
 
-    
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GearItem.Title)
+                            </td>
+                            <td width="10%">
+                                <form asp-action="RemoveTripGear" asp-controller="Trips">
+
+                                    <input label="TripId" type="hidden" asp-for="Trip.TripId" />
+                                    <input name="GearItemId" type="hidden" value="@item.GearItemId" />
+                                    <input type="submit" value="Remove" class="btn-sm btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+
+        </table>
 
 
-</div>
-<div style="text-align: center;">
-    <hr />
-    <a class="btn btn-sm btn-light" asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
-</div>
+
+
+    </div>
+    <div style="text-align: center;">
+        <hr />
+        <a class="btn btn-sm btn-light" asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
+    </div>

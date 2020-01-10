@@ -4,8 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h3 style="text-align: center; margin-top: 0px; font-weight: 700">Your Trips</h3>
-@*<p style="text-align: center">Here is a list of your trips.</p>*@
+<h3 style="text-align: center; margin-top: 0px; font-weight: 700; margin-bottom: 0px;">Your Trips</h3>
+<h6 style="text-align: center; margin-bottom: 10px;">Plan your next photography trip.</h6>
 
 <p style="text-align: center;">
     <a class="btn btn-sm btn-outline-light" asp-action="Create" style="text-align: center; color: whitesmoke; margin-bottom: 15px;">Add a new trip</a>
@@ -28,13 +28,13 @@ else
     {
         if (item.EndDate >= DateTime.Today)
         {
-            <div class="card text-left" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 15px;">
+            <div class="card text-left" style="box-shadow: 3px 3px 11px #000000; margin: auto; max-width: 650px; margin-bottom: 15px; border-radius: 10px;">
                 <div class="card-header">
                     Upcoming Trip
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" style="font-weight: 700; margin-bottom: 5px;">@Html.DisplayFor(modelitem => item.Title)</h5>
-                    <p class="card-text" style="margin-bottom: 5px;">@Html.DisplayFor(modelitem => item.Description)</p>
+                    <p class="card-text" style="margin-bottom: 5px; ">@Html.DisplayFor(modelitem => item.Description)</p>
                     <p class="card-text" style="margin-top: -3px;">Trip Date: @Html.DisplayFor(modelitem => item.StartDate)</p>
 
                 </div>
@@ -52,7 +52,7 @@ else
     {
         if (item.EndDate <= DateTime.Today)
         {
-            <div class="card bg-light mb-3" style="margin-left: 10px; flex-basis: 70%; margin-right: 20px; margin-bottom: 15px;">
+            <div class="card bg-light mb-3" style="box-shadow: 3px 3px 11px #000000; margin: auto; max-width: 650px; margin-bottom: 15px">
                 <div class="card-header">
                     Past Trip
                 </div>

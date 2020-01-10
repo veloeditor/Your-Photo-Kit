@@ -53,6 +53,7 @@
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Trip.UserComments)
+                    @*<a href="@Html.DisplayFor(model => model.Trip.UserComments)">Link to Photos</a>*@
                 </dd>
 
             }
@@ -62,8 +63,15 @@
 
         @if (Model.PickedItems.Count == 0)
         {
-
-            <p class="card-text"><strong>Gear Items Packed: </strong> You do not currently have any gear for this trip.</p>
+        <dl class="row">
+            <dt class="col-sm-2">
+                Gear Items Packed:
+            </dt>
+            <dd class="col-sm-10">
+                <p>You do not currently have any gear for this trip.</p>
+            </dd>
+        </dl>
+             
 
         }
         else

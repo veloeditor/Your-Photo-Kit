@@ -49,7 +49,7 @@
                 @Html.HiddenFor(m => m.Trip.PhotoUrl)
             </div>
             <div class="form-group">
-                <input asp-page-handler="Upload" type="submit" value="Save" class="btn btn-primary" /> |  <a asp-action="Details" asp-route-id="@Model.Trip.TripId">Go Back</a>
+                <input asp-page-handler="Upload" type="submit" value="Save" class="btn btn-primary" /> |  <a asp-action="Details" asp-route-id="@Model.Trip.TripId" class="btn btn-light">Go Back</a>
                 </div>
         </form>
     </div>
