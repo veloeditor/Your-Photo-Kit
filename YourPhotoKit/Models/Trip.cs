@@ -40,8 +40,8 @@ namespace YourPhotoKit.Models
         [Display(Name = "Comments")]
         public string UserComments { get; set; }
 
-        //[Display(Name = "Trip Photo Gallery")]
-        //public string GalleryUrl { get; set; }
+        [Display(Name = "Trip Photo Gallery")]
+        public string GalleryUrl { get; set; }
 
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
