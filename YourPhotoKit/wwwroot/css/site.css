@@ -3,7 +3,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8) ), url(/images/mountain_bg.jpg);
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7) ), url(/images/mountain_bg.jpg);
     background-color: #4a4a4a;
     background-repeat: no-repeat;
     background-attachment: fixed;

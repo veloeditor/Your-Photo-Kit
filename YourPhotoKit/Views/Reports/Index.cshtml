@@ -45,12 +45,12 @@ else
 
             </tr>
         </thead>
-        <tbody class="">
+        <tbody style="background-color:gainsboro; color: black">
             @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        <a href=@Url.Action("Details", "GearItems", new { Id = item.GearItemId })>@Html.DisplayFor(modelItem => item.Title)</a>
+                        <a style="color: black;"href=@Url.Action("Details", "GearItems", new { Id = item.GearItemId })>@Html.DisplayFor(modelItem => item.Title)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Cost)

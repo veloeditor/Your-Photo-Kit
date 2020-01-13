@@ -24,19 +24,19 @@
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.DatePurchased): @Html.DisplayFor(model => model.DatePurchased)</li>
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.SerialNumber):  @Html.DisplayFor(model => model.SerialNumber)</li>
             </ul>
-            <h6>Trips packed with your <span style="font-weight: 700">@Model.Title</span>:</h6>
+            <h6 style="margin-top: 5px;">Trips packed with your <span style="font-weight: 700">@Model.Title</span>:</h6>
             @if (Model.TripGear != null)
             {
                 foreach (var item in Model.TripGear)
                 {
 
-        <ul class="list-group list-group-flush" style="width: 300px;">
-            @*<a href=@Url.Action("Details", "GearItems", new { Id = item.GearItemId })>@item.GearItem.Title</a></li>*@
-            <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;"><a href=@Url.Action("Details", "Trips", new { Id = item.TripId })><i class="fas fa-suitcase"></i></a></li>
-        </ul>
+                    <ul class="list-group list-group-flush" style="width: 300px;">
+                        @*<a href=@Url.Action("Details", "GearItems", new { Id = item.GearItemId })>@item.GearItem.Title</a></li>*@
+                        <li class="list-group-item" style="padding-top: 2px; padding-bottom: 2px;"><a href=@Url.Action("Details", "Trips", new { Id = item.TripId })><i class="fas fa-suitcase" title="@ViewBag.tripName"></i></a></li>
+                    </ul>
                 }
             }
-
+           
 
         </div>
         <div class="card-footer" style="text-align: center">
