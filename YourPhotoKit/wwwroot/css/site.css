@@ -15,6 +15,9 @@ body {
 
 }
 
+a:hover {
+    color: darkred;
+}
 
 #border-top footer {
     background-color: #4a4a4a;
