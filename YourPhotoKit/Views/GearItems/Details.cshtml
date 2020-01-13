@@ -24,9 +24,10 @@
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.DatePurchased): @Html.DisplayFor(model => model.DatePurchased)</li>
                 <li class="list-group-item">@Html.DisplayNameFor(model => model.SerialNumber):  @Html.DisplayFor(model => model.SerialNumber)</li>
             </ul>
-            <h6 style="margin-top: 5px;">Trips packed with your <span style="font-weight: 700">@Model.Title</span>:</h6>
-            @if (Model.TripGear != null)
+
+            @if (Model.TripGear.Count() >= 1)
             {
+                <h6 style="margin-top: 5px;">Trips packed with your <span style="font-weight: 700">@Model.Title</span>:</h6>
                 foreach (var item in Model.TripGear)
                 {
 
@@ -36,7 +37,7 @@
                     </ul>
                 }
             }
-           
+
 
         </div>
         <div class="card-footer" style="text-align: center">
