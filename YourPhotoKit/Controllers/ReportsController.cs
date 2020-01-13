@@ -54,13 +54,13 @@ namespace YourPhotoKit.Controllers
 
             if (SearchString == null)
             {
-                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                var applicationDbContext = _context.GearItems.OrderByDescending(g => g.DatePurchased).Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
                 return View(await applicationDbContext.ToListAsync());
             }
             else
             {
                 var searchTerms = SearchString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                IQueryable<GearItem> searchMatch = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                IQueryable<GearItem> searchMatch = _context.GearItems.OrderByDescending(g => g.DatePurchased).Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
 
                 foreach (var term in searchTerms)
                 {
