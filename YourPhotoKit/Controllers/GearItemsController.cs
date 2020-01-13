@@ -150,15 +150,20 @@ namespace YourPhotoKit.Controllers
                 try
                 {
                     var currentFileName = viewModel.GearItem.PhotoUrl;
-                    //This if statement will check to see if there is a photo already on the gear item and the photo replacing it is a new file (with unique name).
-                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName && currentFileName != null)
+                    var user = await GetCurrentUserAsync();
+                 
+                    if (viewModel.Img != null && viewModel.Img.FileName != currentFileName)
                     {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.GearItem.User = user;
-                        viewModel.GearItem.ApplicationUserId = user.Id;
-                        var images = Directory.GetFiles("wwwroot/images");
-                        var fileToDelete = images.First(i => i.Contains(currentFileName));
-                        System.IO.File.Delete(fileToDelete);
+                        if (currentFileName != null)
+                        {
+
+                            viewModel.GearItem.User = user;
+                            viewModel.GearItem.ApplicationUserId = user.Id;
+
+                            var images = Directory.GetFiles("wwwroot/images");
+                            var fileToDelete = images.First(i => i.Contains(currentFileName));
+                            System.IO.File.Delete(fileToDelete);
+                        }
                         var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
                         var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                         var filePath = Path.Combine(imageDirectory, uniqueFileName);
@@ -167,35 +172,14 @@ namespace YourPhotoKit.Controllers
                             viewModel.Img.CopyTo(myFile);
                         }
                         viewModel.GearItem.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.GearItem);
-                        await _context.SaveChangesAsync();
                     }
-                    //This else if statement allows the user to add a new photo and it will replace the temp image
-                    else if (viewModel.GearItem.PhotoUrl == null)
-                    {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.GearItem.User = user;
-                        viewModel.GearItem.ApplicationUserId = user.Id;
-                        var uniqueFileName = GetUniqueFileName(viewModel.Img.FileName);
-                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                        var filePath = Path.Combine(imageDirectory, uniqueFileName);
-                        using (var myFile = new FileStream(filePath, FileMode.Create))
-                        {
-                            viewModel.Img.CopyTo(myFile);
-                        }
-                        viewModel.GearItem.PhotoUrl = uniqueFileName;
-                        _context.Update(viewModel.GearItem);
-                        await _context.SaveChangesAsync();
-                    }
-                    //The else statement is a basic edit post with no picture consideration
-                    else
-                    {
-                        var user = await GetCurrentUserAsync();
-                        viewModel.GearItem.User = user;
-                        viewModel.GearItem.ApplicationUserId = user.Id; 
-                        _context.Update(viewModel.GearItem);
-                        await _context.SaveChangesAsync();
-                    }
+
+                    viewModel.GearItem.User = user;
+                    viewModel.GearItem.ApplicationUserId = user.Id;
+
+                    _context.Update(viewModel.GearItem);
+                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
