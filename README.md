@@ -3,6 +3,8 @@ This is the repository for my back-end capstone for NSS called Your Photo Kit. T
 
 You can also create a trip and choose what gear you'd like to take.  The app can serve as a "packing list" for your photography trip.
 
+This is an ASP.NET Core MVC web application. 
+
 <p align="center">
   <img width="600" src="https://github.com/veloeditor/portfolio/blob/master/img/portfolio/YourPhotoKit_1.PNG">
 </p>
