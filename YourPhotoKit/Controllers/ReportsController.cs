@@ -54,42 +54,24 @@ namespace YourPhotoKit.Controllers
 
             if (SearchString == null)
             {
-                var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                var applicationDbContext = _context.GearItems.OrderByDescending(g => g.DatePurchased).Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
                 return View(await applicationDbContext.ToListAsync());
             }
             else
             {
                 var searchTerms = SearchString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                IQueryable<GearItem> searchMatch = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
+                IQueryable<GearItem> searchMatch = _context.GearItems.OrderByDescending(g => g.DatePurchased).Include(g => g.User).Where(g => g.ApplicationUserId == user.Id);
 
                 foreach (var term in searchTerms)
                 {
-                    searchMatch = searchMatch.Where(x => x.Title.Contains(term) || x.DatePurchased.Year.ToString().Contains(term));
+                    searchMatch = searchMatch.Where(x => x.Title.Contains(term) || x.gearType.Label.Contains(term) ||x.DatePurchased.Year.ToString().Contains(term));
                 }
 
                 return View(searchMatch.ToList());
 
-
-                //var applicationDbContext = _context.GearItems.Include(g => g.User).Where(g => g.ApplicationUserId == user.Id).Where(g => g.Title.ToLower().Contains(SearchString) || g.DatePurchased.Year.ToString().Contains(SearchString));
-
-               
-                
-                //return View(await applicationDbContext.ToListAsync());
             }
         }
 
-        //Print Index as PDF
-        //public IActionResult PrintPDF()
-        //{
-        //    //Create a PDF from an existing HTML using C#
-        //    var Renderer = new IronPdf.HtmlToPdf();
-        //    var PathToPDF = Path.Combine(_env.ContentRootPath, "https://localhost:5001/Reports");
-        //    var PDF = Renderer.RenderHTMLFileAsPdf(PathToPDF);
-        //    var OutputPath = "GearReport.pdf";
-        //    PDF.SaveAs(OutputPath);
-
-        //    return View();
-        //}
 
         //Insurance List
         public async Task<IActionResult> AllGearReport()
