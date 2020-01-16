@@ -6,5 +6,5 @@ You can also create a trip and choose what gear you'd like to take.  The app can
 This is an ASP.NET Core MVC web application. 
 
 <p align="center">
-  <img width="600" src="https://github.com/veloeditor/portfolio/blob/master/img/portfolio/YourPhotoKit_1.PNG">
+  <img width="600" src="https://github.com/veloeditor/Your-Photo-Kit/blob/master/Your-Photo-Kit-updated-home.png">
 </p>
